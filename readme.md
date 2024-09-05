@@ -1,4 +1,4 @@
-Personal Website.
+Personal Website. Accesible at [seanpatten.com](https://seanpatten.com/)
 
 Goals: Minimize load speed, no cumulative layout shift, minimal and modern design asthetic. 
 
@@ -11,7 +11,7 @@ No seperate ICO for favicon, therefore no seperate request, instead computer emo
 
 
 Performance Measured:  
-As of 9/4/24 desktop results on https://pagespeed.web.dev/ are:  
+As of 9/4/24 desktop results on [pagespeed.web.dev](https://pagespeed.web.dev/) are:  
 First Contentful Paint  
 0.2 s  
 Largest Contentful Paint  
