@@ -1,4 +1,4 @@
-Personal Website. Accesible at [seanpatten.com](https://seanpatten.com/)
+Personal Website. Accessible at [seanpatten.com](https://seanpatten.com/)
 
 Goals: Minimize load speed, no cumulative layout shift, minimal and modern design asthetic. 
 
