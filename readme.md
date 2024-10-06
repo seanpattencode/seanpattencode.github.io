@@ -1,6 +1,6 @@
 Personal Website focused on speed and performance. Accessible at [seanpatten.com](https://seanpatten.com/)
 
-Goals: Minimize load speed, no cumulative layout shift, minimal and modern design asthetic. 
+Goals: Minimize load time, no cumulative layout shift, minimal and modern design asthetic. 
 
 Features:  
 Stripped down to be as performant as possible, with objective of fast loading times and smooth user experience.  
