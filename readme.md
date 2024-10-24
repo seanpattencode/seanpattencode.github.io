@@ -23,3 +23,5 @@ Cumulative Layout Shift
 Speed Index  
 0.2 s  
 With a score of 100 out of 100 on performance.  
+
+It should also be noted that the human reaction time on average is about 200ms, 0.2 seconds, and therefore this should be at the threshold where humans would perceive loading as instant. 
