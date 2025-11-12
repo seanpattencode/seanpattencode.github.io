@@ -12,7 +12,7 @@
             --background-color: #f8f9fa;
             --text-color: #333;
         }
-        
+
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
@@ -45,6 +45,22 @@
             border-bottom: 2px solid var(--secondary-color);
             padding-bottom: 10px;
             margin-top: 40px;
+        }
+
+        h3 {
+            color: var(--text-color);
+            margin-top: 20px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        h3 .date {
+            font-size: 0.9em;
+            font-weight: normal;
+            color: #666;
+            font-style: italic;
         }
 
         .contact-info {
@@ -98,9 +114,43 @@
             font-size: 0.9em;
         }
 
+        .job-entry, .education-entry, .teaching-entry {
+            margin-bottom: 25px;
+        }
+
+        .publication-item {
+            margin-bottom: 15px;
+        }
+
+        .publication-item a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .objective-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .erdos {
+            margin-top: 15px;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
+            }
+
+            h3 {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            h3 .date {
+                margin-top: 5px;
             }
         }
 
@@ -118,31 +168,137 @@
     <div class="container">
         <div class="contact-info">
             <h2>Contact</h2>
-            <p>spatten2@fordham.edu</p>
-            <p><a href="https://www.linkedin.com/in/sean-patten/">https://www.linkedin.com/in/sean-patten</a></p>
-            <p><a href="https://github.com/seanpattencode">https://github.com/seanpattencode</a></p>
+            <p>40 Chateau Drive, Melville, NY</p>
+            <p>1-934-500-4208</p>
+            <p><a href="mailto:spatten2@fordham.edu">spatten2@fordham.edu</a></p>
+            <p><a href="https://linkedin.com/in/sean-patten/">LinkedIn</a> | <a href="https://github.com/seanpattencode">GitHub</a> | <a href="https://seanpatten.com">Website</a></p>
         </div>
-        
+
         <div class="empty-section">
             <!-- Empty div for spacing -->
         </div>
-        
+
+        <div class="section">
+            <h2>Research Objective</h2>
+            <div class="objective-box">
+                <strong>Training, combining, and architecting ensemble strategies to improve performance, safety, and cost effectiveness.</strong>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Publications</h2>
+            <div class="publication-item">
+                Patten, S., Chen, P.-Y., Schweikert, C., & Hsu, D.F. (2025). Enhancing Sentiment Classification with Machine Learning and Combinatorial Fusion. <em>Proceedings of the 23rd IEEE International Conference on Pervasive Intelligence and Computing (PICom 2025)</em>.
+                <a href="https://arxiv.org/abs/2510.27014" target="_blank">[arXiv Link]</a>
+            </div>
+            <div class="erdos">
+                <strong>Erdős Number:</strong> 2 (via Dr. D. F. Hsu)
+            </div>
+        </div>
 
         <div class="section">
             <h2>Experience</h2>
-            <h3>IBM - Research Intern</h3>
-            <p>May 2023 - Present</p>
-            <ul>
-                <li>Developed machine learning model ensemble system for sentiment analysis</li>
-                <li>Achieved state-of-the-art performance with 97.116% accuracy</li>
-                <li>Collaborated with leading researchers in AI and machine learning</li>
-            </ul>
 
-            <div class="empty-section">
-                <!-- Empty div for spacing -->
+            <div class="job-entry">
+                <h3>
+                    Research Intern - IBM
+                    <span class="date">May 2023 - May 2024</span>
+                </h3>
+                <ul>
+                    <li>Led the research and development of a novel ensemble system for sentiment analysis, integrating models using combinatorial fusion.</li>
+                    <li>Achieved state-of-the-art (SOTA) accuracy of 97.072% on the IMDB dataset, surpassing existing benchmarks.</li>
+                    <li>Research resulted in a peer-reviewed publication (PICom 2025) and formed the basis of a Master's thesis.</li>
+                    <li>Collaborators: Dr. Pin-Yu Chen, Dr. D. F. Hsu, Dr. C. Schweikert.</li>
+                </ul>
             </div>
 
-            <h2>Notable Projects</h2>
+            <div class="job-entry">
+                <h3>
+                    Software Developer (Contract) - Social Science Research Council
+                    <span class="date">October 2024 - January 2025</span>
+                </h3>
+                <ul>
+                    <li>Developed a data collection and analysis pipeline to investigate trends in language model adoption and usage on the Hugging Face platform, supporting SSRC research initiatives.</li>
+                    <li>Work under direction of Tim O'Reilly and Ilan Strauss.</li>
+                </ul>
+            </div>
+
+            <div class="job-entry">
+                <h3>
+                    Consultant - Aspire Aviation
+                    <span class="date">January 2025 - Present</span>
+                </h3>
+                <ul>
+                    <li>Developed predictive models for aircraft part failure and automated internal document generation systems using Python and LLMs.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Education</h2>
+
+            <div class="education-entry">
+                <h3>
+                    M.S. in Computer Science
+                    <span class="date">August 2022 - May 2024</span>
+                </h3>
+                <p><strong>Fordham University Graduate School of Arts and Sciences</strong> - Lincoln Center, New York</p>
+                <ul>
+                    <li>GPA: 3.667/4.0</li>
+                    <li><strong>Thesis:</strong> Enhancing Sentiment Classification with Machine Learning and Combinatorial Fusion</li>
+                    <li><strong>Advisor:</strong> Dr. D. F. Hsu</li>
+                    <li><strong>Relevant Coursework:</strong> Artificial Intelligence, Deep Learning, NLP, Machine Learning, Data and Information Fusion (Ensemble Learning)</li>
+                </ul>
+            </div>
+
+            <div class="education-entry">
+                <h3>
+                    B.S. in Computer Science & B.S. in Business Administration
+                    <span class="date">August 2018 - May 2022</span>
+                </h3>
+                <p><strong>Fordham University, Gabelli School of Business</strong> - Bronx, New York</p>
+                <ul>
+                    <li>GPA: 3.625/4.0</li>
+                    <li><strong>Relevant Coursework:</strong> Core Computer Science, Core Business Classes, Concentration in Entrepreneurship</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Awards & Honors</h2>
+            <ul>
+                <li>National Merit Scholarship Semifinalist</li>
+                <li>Johns Hopkins Center for Talented Youth Student</li>
+                <li>We the People Competition 2018 New York State Winner & Nationals Finalist</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Technical Skills</h2>
+            <p><strong>Languages & Frameworks:</strong> Python, PyTorch, Tensorflow, Java, C++, Javascript, SQL, CUDA, Assembly</p>
+            <p><strong>Platforms & Tools:</strong> Kubernetes, Qiskit, Huggingface, Git</p>
+            <p><strong>LLM Tooling:</strong> Prompt Engineering, Fine-Tuning, RAG, LangChain</p>
+            <p><strong>Other:</strong> Robotics</p>
+        </div>
+
+        <div class="section">
+            <h2>Teaching</h2>
+
+            <div class="teaching-entry">
+                <h3>
+                    Club President - Fordham Digital Business Society
+                    <span class="date">2021 - 2022</span>
+                </h3>
+                <p>Helped Fordham students learn practical digital skills. Held events on learning Python, personally teaching the basics to beginners, and increased attendance by over 1,000% compared to previous years.</p>
+            </div>
+
+            <div class="teaching-entry">
+                <h3>
+                    Math and Economics Tutor - High School
+                    <span class="date">2016 - 2018</span>
+                </h3>
+                <p>Provided one-on-one tutoring in mathematics and economics to high school students.</p>
+            </div>
         </div>
 
     </div>
