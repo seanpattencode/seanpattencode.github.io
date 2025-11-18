@@ -4,10 +4,10 @@ Goals: Minimize load time, no cumulative layout shift, minimal and modern design
 
 Features:  
 Stripped down to be as performant as possible, with objective of fast loading times and smooth user experience.  
-No use of images or any externally loaded resources.  
-Use of native fonts. Although roboto is hinted, no external fonts are actually downloaded, preventing any cumulative layout shift and therefore using native os fonts only.  
-Single file that is 4.31 KB, leading to fast loading on all connections.  
-No seperate ICO for favicon, therefore no seperate request, instead computer emoji is used and described in html file.  
+- No use of images or any externally loaded resources.  
+- Use of native fonts. Prevents any cumulative layout shift, loads faster, and reduces total data sent.  
+- Single file that is 4.31 KB, leading to fast loading on all connections.  
+- No seperate ICO for favicon, therefore no seperate request, instead computer emoji is used and described in html file.  
 
 
 Performance Measured:  
@@ -23,5 +23,8 @@ Cumulative Layout Shift
 Speed Index  
 0.2 s  
 With a score of 100 out of 100 on performance.  
+These numbers have not changed as of 11/18/25.
 
-It should also be noted that the human reaction time on average is about 200ms, 0.2 seconds, and therefore this should be at the threshold where humans would perceive loading as instant. 
+It should also be noted 
+- Human reaction time on average is about 200ms, 0.2 seconds, and therefore this should be at the threshold where humans would perceive loading as instant. 
+- According to pagespeed google.com on desktop loads in 0.6 s
