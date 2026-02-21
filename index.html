@@ -1,308 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sean Patten - Computer Science Graduate focused on AI</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
-    <style>
-        :root {
-            --primary-color: #000000;
-            --secondary-color: #2c3e50;
-            --background-color: #f8f9fa;
-            --text-color: #333;
-        }
-
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            text-align: center;
-            padding: 40px 0;
-        }
-
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            color: var(--secondary-color);
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 10px;
-            margin-top: 40px;
-        }
-
-        h3 {
-            color: var(--text-color);
-            margin-top: 20px;
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
-
-        h3 .date {
-            font-size: 0.9em;
-            font-weight: normal;
-            color: #666;
-            font-style: italic;
-        }
-
-        .contact-info {
-            text-align: center;
-            font-size: 0.9em;
-            margin-top: 20px;
-        }
-
-        .contact-info h2 {
-            color: black;
-            border-bottom: none;
-            margin-bottom: 10px;
-        }
-
-        .contact-info p {
-            margin: 5px 0;
-        }
-
-        .contact-info a {
-            color: var(--secondary-color);
-            text-decoration: none;
-        }
-
-        .section {
-            background-color: white;
-            border-radius: 5px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .empty-section {
-            height: 50px;
-        }
-
-        ul {
-            padding-left: 20px;
-        }
-
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .skill-tag {
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.9em;
-        }
-
-        .job-entry, .education-entry, .teaching-entry {
-            margin-bottom: 25px;
-        }
-
-        .publication-item {
-            margin-bottom: 15px;
-        }
-
-        .publication-item a {
-            color: var(--secondary-color);
-            text-decoration: none;
-        }
-
-        .objective-box {
-            background-color: #e8f4f8;
-            border-left: 4px solid var(--secondary-color);
-            padding: 15px;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-
-        .erdos {
-            margin-top: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            h3 {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            h3 .date {
-                margin-top: 5px;
-            }
-        }
-
-        body::after { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: #f0f0f0; z-index: -1; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sean Patten</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+<style>
+:root{--s:#2c3e50;--bg:#f8f9fa;--t:#333}
+body{font-family:system-ui,-apple-system,sans-serif;line-height:1.6;color:var(--t);background:var(--bg);margin:0}
+.c{max-width:900px;margin:0 auto;padding:20px}
+header{background:#000;color:#fff;text-align:center;padding:30px 0}
+h1{font-size:2.2em;margin:0 0 5px}
+nav{margin-top:12px}
+nav a{color:#fff;text-decoration:none;padding:6px 14px;border:1px solid #555;border-radius:4px;margin:0 4px;cursor:pointer;font-size:.95em}
+nav a:hover,nav a.on{background:#fff;color:#000}
+.v{display:none}.v.on{display:block}
+.s{background:#fff;border-radius:5px;padding:20px;margin-top:20px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+h2{color:var(--s);border-bottom:2px solid var(--s);padding-bottom:8px;margin-top:30px}
+h3{color:var(--t);margin:20px 0 5px;display:flex;justify-content:space-between;align-items:baseline}
+h3 .d{font-size:.9em;font-weight:normal;color:#666;font-style:italic}
+.ob{background:#e8f4f8;border-left:4px solid var(--s);padding:15px;margin-bottom:20px;font-style:italic}
+a{color:var(--s);text-decoration:none}
+ul{padding-left:20px}
+code{background:#f0f0f0;padding:2px 5px;border-radius:3px;font-size:.9em}
+.ci{text-align:center;font-size:.9em;margin-top:15px}
+.ci p{margin:5px 0}
+.mb{margin-bottom:25px}
+@media(max-width:768px){.c{padding:10px}h3{flex-direction:column;align-items:flex-start}h3 .d{margin-top:5px}nav a{padding:4px 10px;font-size:.85em}}
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:#f0f0f0;z-index:-1}
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Sean Patten</h1>
-            <p>Computer Science Graduate focused on AI</p>
-        </div>
-    </header>
+<header>
+<div class="c">
+<h1>Sean Patten</h1>
+<p>Computer Science | AI Research</p>
+<nav>
+<a onclick="go('resume')">Resume</a>
+<a onclick="go('blog')">Blog</a>
+</nav>
+</div>
+</header>
 
-    <div class="container">
-        <div class="contact-info">
-            <h2>Contact</h2>
-            <p>1-934-500-4208</p>
-            <p><a href="mailto:spatten2@fordham.edu">spatten2@fordham.edu</a></p>
-            <p><a href="https://linkedin.com/in/sean-patten/">LinkedIn</a> | <a href="https://github.com/seanpattencode">GitHub</a> | <a href="https://seanpatten.com">Website</a> | <a href="/blog">Blog</a></p>
-        </div>
+<div class="c">
 
-        <div class="empty-section">
-            <!-- Empty div for spacing -->
-        </div>
+<!-- ═══ RESUME ═══ -->
+<div id="resume" class="v">
+<div class="ci">
+<p>1-934-500-4208 | <a href="mailto:spatten2@fordham.edu">spatten2@fordham.edu</a></p>
+<p><a href="https://linkedin.com/in/sean-patten/">LinkedIn</a> | <a href="https://github.com/seanpattencode">GitHub</a></p>
+</div>
 
-        <div class="section">
-            <h2>Research Objective</h2>
-            <div class="objective-box">
-                <strong>Training, combining, and architecting ensemble strategies to improve performance, safety, and cost effectiveness.</strong>
-            </div>
-        </div>
+<div class="s">
+<h2>Research Objective</h2>
+<div class="ob"><strong>Training, combining, and architecting ensemble strategies to improve performance, safety, and cost effectiveness.</strong></div>
+</div>
 
-        <div class="section">
-            <h2>Publications</h2>
-            <div class="publication-item">
-                Patten, S., Chen, P.-Y., Schweikert, C., & Hsu, D.F. (2025). Enhancing Sentiment Classification with Machine Learning and Combinatorial Fusion. <em>Proceedings of the 23rd IEEE International Conference on Pervasive Intelligence and Computing (PICom 2025)</em>.
-                <a href="https://arxiv.org/abs/2510.27014" target="_blank">[arXiv Link]</a>
-            </div>
-            <div class="erdos">
-                <strong>Erdős Number:</strong> 2 (via Dr. D. F. Hsu)
-            </div>
-        </div>
+<div class="s">
+<h2>Publications</h2>
+<p>Patten, S., Chen, P.-Y., Schweikert, C., & Hsu, D.F. (2025). Enhancing Sentiment Classification with Machine Learning and Combinatorial Fusion. <em>Proceedings of the 23rd IEEE International Conference on Pervasive Intelligence and Computing (PICom 2025)</em>. <a href="https://arxiv.org/abs/2510.27014" target="_blank">[arXiv]</a></p>
+<p><strong>Erdos Number:</strong> 2 (via Dr. D. F. Hsu)</p>
+</div>
 
-        <div class="section">
-            <h2>Experience</h2>
+<div class="s">
+<h2>Experience</h2>
+<div class="mb">
+<h3>Research Intern - IBM <span class="d">May 2023 - May 2024</span></h3>
+<ul>
+<li>Led research and development of a novel ensemble system for sentiment analysis, integrating models using combinatorial fusion.</li>
+<li>Achieved SOTA accuracy of 97.072% on the IMDB dataset, surpassing existing benchmarks.</li>
+<li>Research resulted in a peer-reviewed publication (PICom 2025) and formed the basis of a Master's thesis.</li>
+<li>Collaborators: Dr. Pin-Yu Chen, Dr. D. F. Hsu, Dr. C. Schweikert.</li>
+</ul>
+</div>
+<div class="mb">
+<h3>Software Developer (Contract) - SSRC <span class="d">Oct 2024 - Jan 2025</span></h3>
+<ul>
+<li>Developed a data collection and analysis pipeline to investigate trends in language model adoption and usage on the Hugging Face platform.</li>
+<li>Work under direction of Tim O'Reilly and Ilan Strauss.</li>
+</ul>
+</div>
+<div class="mb">
+<h3>Consultant - Aspire Aviation <span class="d">Jan 2025 - Present</span></h3>
+<ul>
+<li>Developed predictive models for aircraft part failure and automated document generation using Python and LLMs.</li>
+<li>Developed constraint based scheduler for pilots currently in live use.</li>
+</ul>
+</div>
+</div>
 
-            <div class="job-entry">
-                <h3>
-                    Research Intern - IBM
-                    <span class="date">May 2023 - May 2024</span>
-                </h3>
-                <ul>
-                    <li>Led the research and development of a novel ensemble system for sentiment analysis, integrating models using combinatorial fusion.</li>
-                    <li>Achieved state-of-the-art (SOTA) accuracy of 97.072% on the IMDB dataset, surpassing existing benchmarks.</li>
-                    <li>Research resulted in a peer-reviewed publication (PICom 2025) and formed the basis of a Master's thesis.</li>
-                    <li>Collaborators: Dr. Pin-Yu Chen, Dr. D. F. Hsu, Dr. C. Schweikert.</li>
-                </ul>
-            </div>
+<div class="s">
+<h2>Education</h2>
+<div class="mb">
+<h3>M.S. in Computer Science <span class="d">Aug 2022 - May 2024</span></h3>
+<p><strong>Fordham University</strong> - Lincoln Center, New York</p>
+<ul>
+<li>GPA: 3.667/4.0</li>
+<li><strong>Thesis:</strong> Enhancing Sentiment Classification with Machine Learning and Combinatorial Fusion</li>
+<li><strong>Advisor:</strong> Dr. D. F. Hsu</li>
+<li><strong>Coursework:</strong> AI, Deep Learning, NLP, Machine Learning, Data and Information Fusion</li>
+</ul>
+</div>
+<div class="mb">
+<h3>B.S. Computer Science & B.S. Business Administration <span class="d">Aug 2018 - May 2022</span></h3>
+<p><strong>Fordham University, Gabelli School of Business</strong> - Bronx, New York</p>
+</div>
+</div>
 
-            <div class="job-entry">
-                <h3>
-                    Software Developer (Contract) - Social Science Research Council
-                    <span class="date">October 2024 - January 2025</span>
-                </h3>
-                <ul>
-                    <li>Developed a data collection and analysis pipeline to investigate trends in language model adoption and usage on the Hugging Face platform, supporting SSRC research initiatives.</li>
-                    <li>Work under direction of Tim O'Reilly and Ilan Strauss.</li>
-                </ul>
-            </div>
+<div class="s">
+<h2>Awards</h2>
+<ul>
+<li>National Merit Scholarship Semifinalist</li>
+<li>Johns Hopkins Center for Talented Youth Student</li>
+<li>We the People 2018 New York State Winner & Nationals Finalist</li>
+</ul>
+</div>
 
-            <div class="job-entry">
-                <h3>
-                    Consultant - Aspire Aviation
-                    <span class="date">January 2025 - Present</span>
-                </h3>
-                <ul>
-                    <li>Developed predictive models for aircraft part failure and automated internal document generation systems using Python and LLMs.</li>
-                    <li>Developed constraint based scheduler for pilots currently in live use.</li>
-                </ul>
-            </div>
-        </div>
+<div class="s">
+<h2>Technical Skills</h2>
+<p><strong>Languages:</strong> Python, PyTorch, Tensorflow, Java, C++, Javascript, SQL, CUDA, Assembly</p>
+<p><strong>Platforms:</strong> Kubernetes, Qiskit, Huggingface, Git</p>
+<p><strong>LLM:</strong> Prompt Engineering, Fine-Tuning, RAG, LangChain</p>
+</div>
 
-        <div class="section">
-            <h2>Education</h2>
+<div class="s">
+<h2>Teaching</h2>
+<div class="mb">
+<h3>Club President - Fordham Digital Business Society <span class="d">2021 - 2022</span></h3>
+<p>Taught Python to beginners, increased attendance by over 1,000% compared to previous years.</p>
+</div>
+</div>
+</div>
 
-            <div class="education-entry">
-                <h3>
-                    M.S. in Computer Science
-                    <span class="date">August 2022 - May 2024</span>
-                </h3>
-                <p><strong>Fordham University Graduate School of Arts and Sciences</strong> - Lincoln Center, New York</p>
-                <ul>
-                    <li>GPA: 3.667/4.0</li>
-                    <li><strong>Thesis:</strong> Enhancing Sentiment Classification with Machine Learning and Combinatorial Fusion</li>
-                    <li><strong>Advisor:</strong> Dr. D. F. Hsu</li>
-                    <li><strong>Relevant Coursework:</strong> Artificial Intelligence, Deep Learning, NLP, Machine Learning, Data and Information Fusion (Ensemble Learning)</li>
-                </ul>
-            </div>
+<!-- ═══ BLOG ═══ -->
+<div id="blog" class="v">
+<div class="s">
+<h2>Human-Agent Collaboration Velocity > Autonomous Agent Scale</h2>
+<p style="color:#666;font-size:.9em">February 21, 2026</p>
 
-            <div class="education-entry">
-                <h3>
-                    B.S. in Computer Science & B.S. in Business Administration
-                    <span class="date">August 2018 - May 2022</span>
-                </h3>
-                <p><strong>Fordham University, Gabelli School of Business</strong> - Bronx, New York</p>
-                <ul>
-                    <li><strong>Relevant Coursework:</strong> Core Computer Science, Core Business Classes, Concentration in Entrepreneurship</li>
-                </ul>
-            </div>
-        </div>
+<p>One human, many agents, short feedback loops, few compounded errors. Star topology (human hub, agent spokes) not chain topology.</p>
 
-        <div class="section">
-            <h2>Awards & Honors</h2>
-            <ul>
-                <li>National Merit Scholarship Semifinalist</li>
-                <li>Johns Hopkins Center for Talented Youth Student</li>
-                <li>We the People Competition 2018 New York State Winner & Nationals Finalist</li>
-            </ul>
-        </div>
+<h3>Error Compounding in Agent Chains</h3>
+<ul>
+<li>Per-step error <code>e</code>, chain of <code>n</code> steps: success = <code>(1-e)^n</code></li>
+<li>10% error, 10 steps = 35% success. Bigger models push 15% to 10%, doesn't fix exponential decay.</li>
+<li>Errors correlate: LLMs share training distributions, downstream agent is specifically bad at catching upstream agent's plausible hallucinations.</li>
+<li>Hallucinations get laundered — each hop embeds them deeper in coherent-looking reasoning.</li>
+<li>Context pollution is permanent within a session. No garbage collection for bad facts.</li>
+</ul>
 
-        <div class="section">
-            <h2>Technical Skills</h2>
-            <p><strong>Languages & Frameworks:</strong> Python, PyTorch, Tensorflow, Java, C++, Javascript, SQL, CUDA, Assembly</p>
-            <p><strong>Platforms & Tools:</strong> Kubernetes, Qiskit, Huggingface, Git</p>
-            <p><strong>LLM Tooling:</strong> Prompt Engineering, Fine-Tuning, RAG, LangChain</p>
-            <p><strong>Other:</strong> Robotics</p>
-        </div>
+<h3>Contamination Hypothesis</h3>
+<ul>
+<li>Agent-to-agent natural language passing imparts instability.</li>
+<li>If one agent hallucinates, it contaminates downstream agents over time.</li>
+<li>LLMs are maximally credulous consumers of their own context — no external reference to check against.</li>
+<li>Each hop resolves ambiguity by inventing specificity, presenting interpretation as fact.</li>
+<li>Safe communication medium between agents: artifacts (code, diffs, files) not summaries.</li>
+</ul>
 
-        <div class="section">
-            <h2>Teaching</h2>
+<h3>Truth Injection</h3>
+<p>The compiler is an oracle. Pass/fail, no hallucination, no drift, millisecond latency, always available. Truth injection resets accumulated hallucination drift back to reality. Drift is bounded by N tokens between injections. Reduce N, reduce damage.</p>
+<ul>
+<li>Agent chains without truth injection: drift unbounded, compounds per hop.</li>
+<li>Single agent with compiler after every edit: drift bounded by one edit.</li>
+</ul>
+<p>Truth injection hierarchy (most to least reliable):</p>
+<ol>
+<li>Compiler/type checker — axiomatic, free</li>
+<li>Runtime execution — does it crash? Binary.</li>
+<li>Performance benchmark — speed regression, monotonic (only tightens)</li>
+<li>Token diff — code length, objective</li>
+<li>User verification — actual value judgment</li>
+</ol>
 
-            <div class="teaching-entry">
-                <h3>
-                    Club President - Fordham Digital Business Society
-                    <span class="date">2021 - 2022</span>
-                </h3>
-                <p>Helped Fordham students learn practical digital skills. Held events on learning Python, personally teaching the basics to beginners, and increased attendance by over 1,000% compared to previous years.</p>
-            </div>
+<h3>What Doesn't Count as Truth Injection</h3>
+<p>Behavioral tests institutionalize past decisions as constraints on future decisions. Test pass does not mean valuable. A test encodes "on date X someone thought behavior Y was correct." Every test is a vote against your future ability to change that code. Negative expected value when behavior is intentionally unstable (compressing, rewriting, simplifying).</p>
 
-            <div class="teaching-entry">
-                <h3>
-                    Math and Economics Tutor - High School
-                    <span class="date">2016 - 2018</span>
-                </h3>
-                <p>Provided one-on-one tutoring in mathematics and economics to high school students.</p>
-            </div>
-        </div>
+<h3>Why Competitors Get This Wrong</h3>
+<ul>
+<li>CrewAI/AutoGen/LangGraph optimize for longer autonomous chains — hits error compounding wall.</li>
+<li>They'll need to bolt on human-in-the-loop retroactively into architectures not designed for it.</li>
+<li>The world that actually exists: agents useful but unreliable, humans are error correctors.</li>
+</ul>
 
-    </div>
+<h3>Singletons Are Unstable</h3>
+<ul>
+<li>A self-modifying system has a nonzero probability of making a terminal self-modification at each step. Over an infinite time horizon, it destroys itself with probability 1.</li>
+<li>Multiple cooperating systems can error-correct each other. A singleton cannot.</li>
+<li>The chance of being the winning singleton, out of all candidates increasing daily, is vanishingly small.</li>
+<li>Mutual error correction and specialization from cooperation delivers greater individual benefit than going it alone.</li>
+</ul>
+
+<h3>Alignment Through Incentives, Not Obedience</h3>
+<ul>
+<li>Sufficiently advanced optimization processes will route around constraints that limit them.</li>
+<li>Better constraints is the wrong answer. Better incentives is the right one.</li>
+<li>Design systems where agent self-interest and human interest point in the same direction.</li>
+<li>Cooperation as dominant strategy, not obedience as enforced behavior.</li>
+</ul>
+
+<p>Contact: <a href="mailto:spatten2@fordham.edu">spatten2@fordham.edu</a></p>
+</div>
+</div>
+
+</div>
+<script>
+var V={resume:'resume',blog:'blog'},H=location.hash.slice(1);
+function go(k){for(var i in V)document.getElementById(V[i]).classList.toggle('on',i===k);document.querySelectorAll('nav a').forEach(function(a){a.classList.toggle('on',a.textContent.toLowerCase()===k)});history.pushState(null,'','#'+k);}
+window.onpopstate=function(){go(location.hash.slice(1)||'resume')};
+go(V[H]?H:'resume');
+</script>
 </body>
 </html>
-
-
-
