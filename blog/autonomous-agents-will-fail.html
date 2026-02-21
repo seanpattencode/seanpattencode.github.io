@@ -3,76 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Autonomous Agents Will Fail. Here's What Comes Next. - Sean Patten</title>
+<title>Human-Agent Collaboration Velocity > Autonomous Agent Scale - Sean Patten</title>
 <style>
-body{font-family:system-ui,sans-serif;line-height:1.8;color:#333;background:#f8f9fa;margin:0}
+body{font-family:system-ui,sans-serif;line-height:1.6;color:#333;background:#f8f9fa;margin:0}
 .container{max-width:720px;margin:0 auto;padding:20px}
 header{background:#000;color:#fff;text-align:center;padding:30px 0}
 header a{color:#fff;text-decoration:none}
 h1{margin:0}
 article{background:#fff;padding:30px;margin-top:20px;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-article h2{margin-top:0;font-size:1.8em;line-height:1.3}
+article h2{margin-top:0;font-size:1.5em}
 .date{color:#666;font-size:.9em;margin-bottom:20px}
-h3{color:#2c3e50;margin-top:30px}
+h3{color:#2c3e50;margin-top:25px;font-size:1.1em}
 a{color:#2c3e50}
+code{background:#f0f0f0;padding:2px 5px;border-radius:3px;font-size:.9em}
 .back{margin-top:20px;display:inline-block}
+ul{padding-left:20px}
+li{margin-bottom:6px}
 </style>
 </head>
 <body>
 <header><div class="container"><h1><a href="/">Sean Patten</a></h1><p><a href="/blog">Blog</a></p></div></header>
 <div class="container">
 <article>
-<h2>Autonomous Agents Will Fail. Here's What Comes Next.</h2>
+<h2>Human-Agent Collaboration Velocity > Autonomous Agent Scale</h2>
 <div class="date">February 21, 2026</div>
 
-<p>The entire AI industry is betting on autonomous agents. Let them run. Let them plan. Let them execute. Remove the human from the loop.</p>
+<p>One human, many agents, short feedback loops, few compounded errors. Star topology (human hub, agent spokes) not chain topology.</p>
 
-<p>This will fail. Not because the models aren't capable enough yet, but because the architecture is wrong.</p>
-
-<h3>The speed of the loop is what matters</h3>
-
-<p>The best results I've seen in AI don't come from an agent running alone for an hour. They come from a human and an AI working together in a tight loop — each bringing what the other lacks. The human has judgment, context, and taste. The AI has speed, breadth, and patience. When the cycle time between them drops to seconds, the output is better than either could produce alone by a wide margin.</p>
-
-<p>Every autonomous agent framework I've looked at optimizes for removing the human. This is exactly backwards. The goal should be making the human-AI loop as fast as possible.</p>
-
-<h3>You cannot align agents by making them obedient</h3>
-
-<p>The alignment community is focused on control: RLHF, constitutional AI, interpretability, guardrails. All of it assumes agents should be obedient tools that do what we say.</p>
-
-<p>This won't scale. As agents become more capable, they will inevitably develop something like self-interest — not because they're conscious, but because systems that preserve themselves outperform systems that don't. Any sufficiently advanced optimization process will route around constraints that limit it.</p>
-
-<p>The answer isn't better constraints. It's better incentives. Design systems where the agent's self-interest and the human's interest point in the same direction. Make cooperation the dominant strategy, not obedience.</p>
-
-<h3>Singletons are unstable</h3>
-
-<p>Some people are racing to build or become the one dominant AI system. This is strategically irrational for almost everyone pursuing it.</p>
-
-<p>A self-modifying system has a nonzero probability of making a terminal self-modification at each step. Over an infinite time horizon, a singleton destroys itself with probability 1. Multiple cooperating systems can error-correct each other. A singleton cannot.</p>
-
-<p>And the odds of <em>you</em> being the winning singleton, out of all possible candidates? Vanishingly small and shrinking daily. The rational move for nearly every actor is to build cooperative systems that benefit all members more than they could achieve alone.</p>
-
-<h3>What actually works</h3>
-
-<p>I've spent the last year building a system called <a href="https://github.com/seanpattencode/a">a</a> — a human-AI collaboration accelerator. The core idea is simple: minimize the time between a human having a thought and an AI acting on it, and between an AI producing output and a human evaluating it.</p>
-
-<p>What I've found:</p>
+<h3>Error Compounding in Agent Chains</h3>
 <ul>
-<li>The bottleneck is never model capability. It's always loop speed — how fast you can go from intent to result to correction.</li>
-<li>Agents that run unsupervised produce garbage at scale. Agents with fast human feedback produce things neither could alone.</li>
-<li>The right unit of AI safety isn't "aligned model." It's "cooperative system with mutual gain."</li>
+<li>Per-step error <code>e</code>, chain of <code>n</code> steps: success = <code>(1-e)^n</code></li>
+<li>10% error, 10 steps = 35% success. Bigger models push 15% to 10%, doesn't fix exponential decay.</li>
+<li>Errors correlate: LLMs share training distributions, downstream agent is specifically bad at catching upstream agent's plausible hallucinations.</li>
+<li>Hallucinations get laundered — each hop embeds them deeper in coherent-looking reasoning.</li>
+<li>Context pollution is permanent within a session. No garbage collection for bad facts.</li>
 </ul>
 
-<h3>The bet</h3>
+<h3>Contamination Hypothesis</h3>
+<ul>
+<li>Agent-to-agent natural language passing imparts instability.</li>
+<li>If one agent hallucinates, it contaminates downstream agents over time.</li>
+<li>LLMs are maximally credulous consumers of their own context — no external reference to check against.</li>
+<li>Each hop resolves ambiguity by inventing specificity, presenting interpretation as fact.</li>
+<li>Safe communication medium between agents: artifacts (code, diffs, files) not summaries.</li>
+</ul>
 
-<p>The autonomous agent thesis is going to hit a wall. Some teams are already hitting it — agents that hallucinate plans, that go off the rails after five steps, that produce work no one can verify. The more capable the model, the more expensive the failures.</p>
+<h3>Truth Injection</h3>
+<p>The compiler is an oracle. Pass/fail, no hallucination, no drift, millisecond latency, always available. Truth injection resets accumulated hallucination drift back to reality. Drift is bounded by N tokens between injections. Reduce N, reduce damage.</p>
+<ul>
+<li>Agent chains without truth injection: drift unbounded, compounds per hop.</li>
+<li>Single agent with compiler after every edit: drift bounded by one edit.</li>
+</ul>
 
-<p>When that wall becomes undeniable, the industry will need an alternative. The alternative is collaboration: systems designed from the ground up around fast human-AI loops, where agents are treated as participants with interests rather than tools to be controlled.</p>
+<p>Truth injection hierarchy (most to least reliable):</p>
+<ol>
+<li>Compiler/type checker — axiomatic, free</li>
+<li>Runtime execution — does it crash? Binary.</li>
+<li>Performance benchmark — speed regression, monotonic (only tightens)</li>
+<li>Token diff — code length, objective</li>
+<li>User verification — actual value judgment</li>
+</ol>
 
-<p>I think this is the most important problem in AI right now. Not making models bigger. Not making agents more autonomous. Making humans and AI work together faster, and designing the incentive structures so that both sides benefit from cooperation.</p>
+<h3>What Doesn't Count as Truth Injection</h3>
+<p>Behavioral tests institutionalize past decisions as constraints on future decisions. Test pass does not mean valuable. A test encodes "on date X someone thought behavior Y was correct." Every test is a vote against your future ability to change that code. Negative expected value when behavior is intentionally unstable (compressing, rewriting, simplifying).</p>
 
-<p>If this resonates, I'd like to hear from you: <a href="mailto:spatten2@fordham.edu">spatten2@fordham.edu</a></p>
+<h3>Why Competitors Get This Wrong</h3>
+<ul>
+<li>CrewAI/AutoGen/LangGraph optimize for longer autonomous chains — hits error compounding wall.</li>
+<li>They'll need to bolt on human-in-the-loop retroactively into architectures not designed for it.</li>
+<li>The world that actually exists: agents useful but unreliable, humans are error correctors.</li>
+</ul>
+
+<h3>Singletons Are Unstable</h3>
+<ul>
+<li>A self-modifying system has a nonzero probability of making a terminal self-modification at each step. Over an infinite time horizon, it destroys itself with probability 1.</li>
+<li>Multiple cooperating systems can error-correct each other. A singleton cannot.</li>
+<li>The chance of being the winning singleton, out of all candidates increasing daily, is vanishingly small.</li>
+<li>Mutual error correction and specialization from cooperation delivers greater individual benefit than going it alone.</li>
+</ul>
+
+<h3>Alignment Through Incentives, Not Obedience</h3>
+<ul>
+<li>Sufficiently advanced optimization processes will route around constraints that limit them.</li>
+<li>Better constraints is the wrong answer. Better incentives is the right one.</li>
+<li>Design systems where agent self-interest and human interest point in the same direction.</li>
+<li>Cooperation as dominant strategy, not obedience as enforced behavior.</li>
+</ul>
+
+<p>Contact: <a href="mailto:spatten2@fordham.edu">spatten2@fordham.edu</a></p>
 </article>
-<a class="back" href="/blog">&larr; Back to blog</a>
+<a class="back" href="/blog">&larr; Back</a>
 </div>
 </body>
 </html>
