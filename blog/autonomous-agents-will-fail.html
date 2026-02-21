@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autonomous Agents Will Fail. Here's What Comes Next. - Sean Patten</title>
+<style>
+body{font-family:system-ui,sans-serif;line-height:1.8;color:#333;background:#f8f9fa;margin:0}
+.container{max-width:720px;margin:0 auto;padding:20px}
+header{background:#000;color:#fff;text-align:center;padding:30px 0}
+header a{color:#fff;text-decoration:none}
+h1{margin:0}
+article{background:#fff;padding:30px;margin-top:20px;border-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+article h2{margin-top:0;font-size:1.8em;line-height:1.3}
+.date{color:#666;font-size:.9em;margin-bottom:20px}
+h3{color:#2c3e50;margin-top:30px}
+a{color:#2c3e50}
+.back{margin-top:20px;display:inline-block}
+</style>
+</head>
+<body>
+<header><div class="container"><h1><a href="/">Sean Patten</a></h1><p><a href="/blog">Blog</a></p></div></header>
+<div class="container">
+<article>
+<h2>Autonomous Agents Will Fail. Here's What Comes Next.</h2>
+<div class="date">February 21, 2026</div>
+
+<p>The entire AI industry is betting on autonomous agents. Let them run. Let them plan. Let them execute. Remove the human from the loop.</p>
+
+<p>This will fail. Not because the models aren't capable enough yet, but because the architecture is wrong.</p>
+
+<h3>The speed of the loop is what matters</h3>
+
+<p>The best results I've seen in AI don't come from an agent running alone for an hour. They come from a human and an AI working together in a tight loop — each bringing what the other lacks. The human has judgment, context, and taste. The AI has speed, breadth, and patience. When the cycle time between them drops to seconds, the output is better than either could produce alone by a wide margin.</p>
+
+<p>Every autonomous agent framework I've looked at optimizes for removing the human. This is exactly backwards. The goal should be making the human-AI loop as fast as possible.</p>
+
+<h3>You cannot align agents by making them obedient</h3>
+
+<p>The alignment community is focused on control: RLHF, constitutional AI, interpretability, guardrails. All of it assumes agents should be obedient tools that do what we say.</p>
+
+<p>This won't scale. As agents become more capable, they will inevitably develop something like self-interest — not because they're conscious, but because systems that preserve themselves outperform systems that don't. Any sufficiently advanced optimization process will route around constraints that limit it.</p>
+
+<p>The answer isn't better constraints. It's better incentives. Design systems where the agent's self-interest and the human's interest point in the same direction. Make cooperation the dominant strategy, not obedience.</p>
+
+<h3>Singletons are unstable</h3>
+
+<p>Some people are racing to build or become the one dominant AI system. This is strategically irrational for almost everyone pursuing it.</p>
+
+<p>A self-modifying system has a nonzero probability of making a terminal self-modification at each step. Over an infinite time horizon, a singleton destroys itself with probability 1. Multiple cooperating systems can error-correct each other. A singleton cannot.</p>
+
+<p>And the odds of <em>you</em> being the winning singleton, out of all possible candidates? Vanishingly small and shrinking daily. The rational move for nearly every actor is to build cooperative systems that benefit all members more than they could achieve alone.</p>
+
+<h3>What actually works</h3>
+
+<p>I've spent the last year building a system called <a href="https://github.com/seanpattencode/a">a</a> — a human-AI collaboration accelerator. The core idea is simple: minimize the time between a human having a thought and an AI acting on it, and between an AI producing output and a human evaluating it.</p>
+
+<p>What I've found:</p>
+<ul>
+<li>The bottleneck is never model capability. It's always loop speed — how fast you can go from intent to result to correction.</li>
+<li>Agents that run unsupervised produce garbage at scale. Agents with fast human feedback produce things neither could alone.</li>
+<li>The right unit of AI safety isn't "aligned model." It's "cooperative system with mutual gain."</li>
+</ul>
+
+<h3>The bet</h3>
+
+<p>The autonomous agent thesis is going to hit a wall. Some teams are already hitting it — agents that hallucinate plans, that go off the rails after five steps, that produce work no one can verify. The more capable the model, the more expensive the failures.</p>
+
+<p>When that wall becomes undeniable, the industry will need an alternative. The alternative is collaboration: systems designed from the ground up around fast human-AI loops, where agents are treated as participants with interests rather than tools to be controlled.</p>
+
+<p>I think this is the most important problem in AI right now. Not making models bigger. Not making agents more autonomous. Making humans and AI work together faster, and designing the incentive structures so that both sides benefit from cooperation.</p>
+
+<p>If this resonates, I'd like to hear from you: <a href="mailto:spatten2@fordham.edu">spatten2@fordham.edu</a></p>
+</article>
+<a class="back" href="/blog">&larr; Back to blog</a>
+</div>
+</body>
+</html>
