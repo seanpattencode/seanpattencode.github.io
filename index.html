@@ -34,8 +34,8 @@ code{background:#f0f0f0;padding:2px 5px;border-radius:3px;font-size:.9em}
 <h1>Sean Patten</h1>
 <p>Computer Science | AI Research</p>
 <nav>
-<a onclick="go('resume')">Resume</a>
-<a onclick="go('blog')">Blog</a>
+<a data-go=resume>Resume</a>
+<a data-go=blog>Blog</a>
 </nav>
 </div>
 </header>
@@ -204,9 +204,8 @@ code{background:#f0f0f0;padding:2px 5px;border-radius:3px;font-size:.9em}
 </div>
 <script>
 var V={resume:'resume',blog:'blog'},H=location.hash.slice(1);
-function go(k){for(var i in V)document.getElementById(V[i]).classList.toggle('on',i===k);document.querySelectorAll('nav a').forEach(function(a){a.classList.toggle('on',a.textContent.toLowerCase()===k)});history.pushState(null,'','#'+k);}
-window.onpopstate=function(){go(location.hash.slice(1)||'resume')};
-go(V[H]?H:'resume');
+function go(k){for(var i in V)document.getElementById(V[i]).classList.toggle('on',i===k);document.querySelectorAll('[data-go]').forEach(function(a){a.classList.toggle('on',a.dataset.go===k)});history.pushState(null,'','#'+k);}
+document.addEventListener('touchstart',function(e){var g=e.target.closest('[data-go]');if(g){e.preventDefault();go(g.dataset.go);}},{passive:false});document.addEventListener('click',function(e){var g=e.target.closest('[data-go]');if(g)go(g.dataset.go);});window.onpopstate=function(){go(location.hash.slice(1)||'resume')};go(V[H]?H:'resume');
 </script>
 </body>
 </html>
