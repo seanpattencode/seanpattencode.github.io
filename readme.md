@@ -1,13 +1,15 @@
 Personal Website focused on speed and performance. Accessible at [seanpatten.com](https://seanpatten.com/)
 
-Goals: Minimize load time, no cumulative layout shift, minimal and modern design asthetic. 
+Goals: Minimize load time, no cumulative layout shift, minimal and modern design asthetic.
 
-Features:  
-Stripped down to be as performant as possible, with objective of fast loading times and smooth user experience.  
-- No use of images or any externally loaded resources.  
-- Use of native fonts. Prevents any cumulative layout shift, loads faster, and reduces total data sent.  
-- Single file that is 4.31 KB, leading to fast loading on all connections.  
-- No seperate ICO for favicon, therefore no seperate request, instead computer emoji is used and described in html file.  
+Features:
+Stripped down to be as performant as possible, with objective of fast loading times and smooth user experience.
+- No images or externally loaded resources.
+- Native system fonts only. No layout shift, no extra requests.
+- Single file, ~3 KB.
+- No favicon request.
+
+Tag set: strict subset of Tim Berners-Lee's original 1991 HTML — `<title>`, `<h1>`–`<h3>`, `<p>`, `<a>`, `<ul>`, `<li>`, `<hr>`, `<i>`, `<b>`. No `<div>`, `<section>`, `<header>`, `<article>` — none of those existed in 1991 and they aren't needed. Plus `<meta charset>` + `<meta viewport>` + a 11-line `<style>` block for modern typography (system-ui font, max-width, dark-mode aware via `color-scheme: light dark`). The semantic content renders correctly in every browser ever shipped, including 1993 Mosaic and text-only browsers like Lynx — the CSS is the only thing newer than 2009.
 
 
 Performance Measured:  
