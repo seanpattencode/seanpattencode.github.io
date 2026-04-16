@@ -5,25 +5,36 @@
 <style><!--
 html{color-scheme:light dark}
 body{font:16px/1.6 system-ui,sans-serif;max-width:32em;margin:6em auto;padding:0 1.2em;text-align:center}
-a.btn{display:inline-block;padding:.8em 2em;background:#06c;color:#fff;text-decoration:none;border-radius:8px;font-size:1.1em}
+a.btn{display:inline-block;padding:.8em 2em;background:#06c;color:#fff;text-decoration:none;border-radius:8px;font-size:1.1em;margin:.3em}
 a.btn:hover{background:#05a}
-@media(prefers-color-scheme:dark){a.btn{background:#6af;color:#000}a.btn:hover{background:#5ae}}
+.btn2{display:inline-block;padding:.8em 2em;background:#333;color:#fff;border:none;border-radius:8px;font-size:1.1em;cursor:pointer;margin:.3em}
+.btn2:hover{background:#555}
+@media(prefers-color-scheme:dark){a.btn{background:#6af;color:#000}a.btn:hover{background:#5ae}.btn2{background:#555}.btn2:hover{background:#777}}
 code{background:#8882;padding:.2em .5em;border-radius:4px;font-size:.9em}
 .steps{text-align:left;display:inline-block;margin:1em 0;font-size:.95em}
+.or{margin:1.5em 0 .5em;color:#888}
 --></style>
 <h1>a</h1>
 <p>Agent manager & human-AI accelerator.
-<p id=dl></p>
-<div class=steps id=steps></div>
-<p id=alt></p>
+<div id=main></div>
 <p><a href=https://github.com/seanpattencode/a>GitHub</a>
 <script>
-var m=/Mac/.test(navigator.platform),l=/Linux/.test(navigator.platform)
+var cmd='curl -fsSL https://raw.githubusercontent.com/seanpattencode/a/main/a.c | sh'
 var dmg='https://github.com/seanpattencode/a/releases/latest/download/a.dmg'
+var m=/Mac/.test(navigator.platform),l=/Linux/.test(navigator.platform)
+var h=''
+if(m||l){
+h+='<button class=btn2 onclick="navigator.clipboard.writeText(\''+cmd+'\');this.textContent=\'Copied!\'">Copy install command</button>'
+h+='<div class=steps>1. Open <b>Terminal</b>'+(m?' (Cmd+Space, type Terminal)':'')+'<br>2. Paste and press Enter</div>'
+}
 if(m){
-document.getElementById('dl').innerHTML='<a class=btn href="'+dmg+'">Install for Mac</a>'
-document.getElementById('steps').innerHTML='1. Open the downloaded .dmg<br>2. Right-click <b>Install a</b> → Open<br>3. Click Open when macOS asks to confirm'
-}else if(l)document.getElementById('dl').innerHTML='<a class=btn href=install.command download>Install for Linux</a>'
-else document.getElementById('dl').innerHTML='<a class=btn href="'+dmg+'">Install</a>'
-document.getElementById('alt').innerHTML='or: <code>curl -fsSL https://raw.githubusercontent.com/seanpattencode/a/main/a.c | sh</code>'
+h+='<p class=or>or'
+h+='<p><a class=btn href="'+dmg+'">Download .dmg</a>'
+h+='<div class=steps>1. Open the downloaded .dmg<br>2. Right-click <b>Install a</b> → Open<br>3. Click Open when macOS asks</div>'
+}
+if(!m&&!l){
+h+='<button class=btn2 onclick="navigator.clipboard.writeText(\''+cmd+'\');this.textContent=\'Copied!\'">Copy install command</button>'
+h+='<div class=steps>Paste in your terminal and press Enter</div>'
+}
+document.getElementById('main').innerHTML=h
 </script>
