@@ -1,0 +1,25 @@
+<!doctype html>
+<meta charset=utf-8>
+<title>Install a</title>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<style><!--
+html{color-scheme:light dark}
+body{font:16px/1.6 system-ui,sans-serif;max-width:32em;margin:6em auto;padding:0 1.2em;text-align:center}
+a.btn{display:inline-block;padding:.8em 2em;background:#06c;color:#fff;text-decoration:none;border-radius:8px;font-size:1.1em}
+a.btn:hover{background:#05a}
+@media(prefers-color-scheme:dark){a.btn{background:#6af;color:#000}a.btn:hover{background:#5ae}}
+code{background:#8882;padding:.2em .5em;border-radius:4px;font-size:.9em}
+--></style>
+<h1>a</h1>
+<p>Agent manager & human-AI accelerator.
+<p id=dl></p>
+<p id=alt></p>
+<p><a href=https://github.com/seanpattencode/a>GitHub</a>
+<script>
+var m=/Mac/.test(navigator.platform),l=/Linux/.test(navigator.platform)
+var dmg='https://github.com/seanpattencode/a/releases/latest/download/a.dmg'
+if(m)document.getElementById('dl').innerHTML='<a class=btn href="'+dmg+'">Install for Mac</a>'
+else if(l)document.getElementById('dl').innerHTML='<a class=btn href=install.command download>Install for Linux</a>'
+else document.getElementById('dl').innerHTML='<a class=btn href="'+pkg+'">Install</a>'
+document.getElementById('alt').innerHTML='or: <code>curl -fsSL https://raw.githubusercontent.com/seanpattencode/a/main/a.c | sh</code>'
+</script>
