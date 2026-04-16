@@ -10,9 +10,10 @@ a.btn:hover{background:#05a}
 .btn2{display:inline-block;padding:.8em 2em;background:#333;color:#fff;border:none;border-radius:8px;font-size:1.1em;cursor:pointer;margin:.3em}
 .btn2:hover{background:#555}
 @media(prefers-color-scheme:dark){a.btn{background:#6af;color:#000}a.btn:hover{background:#5ae}.btn2{background:#555}.btn2:hover{background:#777}}
-code{background:#8882;padding:.2em .5em;border-radius:4px;font-size:.9em}
+code{background:#8882;padding:.2em .5em;border-radius:4px;font-size:.9em;word-break:break-all}
 .steps{text-align:left;display:inline-block;margin:1em 0;font-size:.95em}
 .or{margin:1.5em 0 .5em;color:#888}
+.cmd{margin:.8em 0;text-align:left}
 --></style>
 <h1>a</h1>
 <p>Agent manager & human-AI accelerator.
@@ -24,7 +25,8 @@ var dmg='https://github.com/seanpattencode/a/releases/latest/download/a.dmg'
 var m=/Mac/.test(navigator.platform),l=/Linux/.test(navigator.platform)
 var h=''
 if(m||l){
-h+='<button class=btn2 onclick="navigator.clipboard.writeText(\''+cmd+'\');this.textContent=\'Copied!\'">Copy install command</button>'
+h+='<button class=btn2 onclick="navigator.clipboard.writeText(\''+cmd+'\');var s=this.querySelector(\'span\');s.textContent=\'Copied!\';setTimeout(function(){s.textContent=\'Copy install command\'},2000)"><span>Copy install command</span></button>'
+h+='<div class=cmd><code>'+cmd+'</code></div>'
 h+='<div class=steps>1. Open <b>Terminal</b>'+(m?' (Cmd+Space, type Terminal)':'')+'<br>2. Paste and press Enter</div>'
 }
 if(m){
@@ -33,7 +35,8 @@ h+='<p><a class=btn href="'+dmg+'">Download .dmg</a>'
 h+='<div class=steps>1. Open the downloaded .dmg<br>2. Right-click <b>Install a</b> → Open<br>3. Click Open when macOS asks</div>'
 }
 if(!m&&!l){
-h+='<button class=btn2 onclick="navigator.clipboard.writeText(\''+cmd+'\');this.textContent=\'Copied!\'">Copy install command</button>'
+h+='<button class=btn2 onclick="navigator.clipboard.writeText(\''+cmd+'\');var s=this.querySelector(\'span\');s.textContent=\'Copied!\';setTimeout(function(){s.textContent=\'Copy install command\'},2000)"><span>Copy install command</span></button>'
+h+='<div class=cmd><code>'+cmd+'</code></div>'
 h+='<div class=steps>Paste in your terminal and press Enter</div>'
 }
 document.getElementById('main').innerHTML=h
