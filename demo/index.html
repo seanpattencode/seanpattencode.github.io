@@ -28,12 +28,21 @@ html,body{margin:0;height:100%;background:#000;color:#ddd;font:14px system-ui,sa
 <button onclick="a('run `a diff` and explain the number')">a diff</button>
 <button onclick="a('run `a` and list what you see')">a</button>
 <button onclick="a('show me the first 40 lines of a.c')">peek code</button>
-<button onclick="a('Demo the multi-agent review flow end-to-end. STEP 1: write a small Python function (about 10 lines, visually interesting — pick one: fibonacci, binary_search, prime_sieve, quicksort). Print it. STEP 2: save it to /tmp/demo_code.py, then for each peer reviewer run: `codex exec \\\"Review this Python in 2 short sentences and suggest 1 concrete improvement:\\n$(cat /tmp/demo_code.py)\\\"` then `gemini -p \\\"Review this Python in 2 short sentences and suggest 1 concrete improvement:\\n$(cat /tmp/demo_code.py)\\\"`. Print each reviewer name as a header and their raw response verbatim. STEP 3: incorporate the best suggestion(s) and print a revised final version inside a fenced triple-backtick block labeled ```COPY — final```. Keep every step visible so the visitor sees the orchestration. At the end give Ask suggestions as usual.')" title="claude writes code, codex+gemini review, claude revises">review flow</button>
+<button onclick="a(flow)" title="claude writes code, codex+gemini review, claude revises">review flow</button>
 <a href=https://github.com/seanpattencode/a target=_blank>github ↗</a>
 <span class=r id=rt>live</span>
 </div>
 <div id=t></div>
 <script>
+var flow=[
+ "Demo the multi-agent review flow end-to-end. Keep every step visible.",
+ "STEP 1: write a small Python function (~10 lines) — pick ONE: fibonacci, binary_search, prime_sieve, quicksort. Save it to /tmp/demo_code.py and print it.",
+ "STEP 2: for peer review, run these two shell commands and print each reviewer's name as a header followed by their raw response verbatim:",
+ "  codex exec \"Review this Python in 2 short sentences and suggest 1 concrete improvement: $(cat /tmp/demo_code.py)\"",
+ "  gemini -p \"Review this Python in 2 short sentences and suggest 1 concrete improvement: $(cat /tmp/demo_code.py)\"",
+ "STEP 3: produce a revised final version incorporating the best suggestion(s). Print it inside a triple-backtick fence labeled COPY — final.",
+ "End with your usual Ask suggestions."
+].join("\n");
 var T=new Terminal({scrollback:10000,cursorBlink:true,fontSize:13}),F=new FitAddon.FitAddon(),E=document.getElementById('t');
 T.loadAddon(F);T.open(E);
 var P=new URLSearchParams(location.search),AG=P.get('a')||'claude',ws;
