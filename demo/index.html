@@ -11,10 +11,17 @@ html,body{margin:0;height:100%;background:#000;color:#ddd;font:14px system-ui,sa
 #bar .l{color:#666;margin-right:4px;font-size:12px;letter-spacing:.5px}
 #bar button,#bar a{background:#111;color:#ccc;border:1px solid #2a2a2a;padding:6px 11px;cursor:pointer;font:13px system-ui;border-radius:3px;text-decoration:none;display:inline-block}
 #bar button:hover,#bar a:hover{background:#1c1c1c;border-color:#444;color:#fff}
+#bar .sel{background:#183;color:#fff;border-color:#2a5}
+#bar .sep{width:1px;height:22px;background:#222;margin:0 4px}
 #bar .r{margin-left:auto;color:#555;font-size:11px}
 #t{height:calc(100vh - 43px);width:100vw}
 </style>
 <div id=bar>
+<span class=l>agent:</span>
+<button id=bClaude onclick="pick('claude')">claude</button>
+<button id=bCodex  onclick="pick('codex')">codex</button>
+<button id=bGemini onclick="pick('gemini')">gemini</button>
+<span class=sep></span>
 <span class=l>try:</span>
 <button onclick="a('what is a? one sentence.')">what is a?</button>
 <button onclick="a('give me a 4-bullet tour of a')">tour</button>
@@ -22,19 +29,26 @@ html,body{margin:0;height:100%;background:#000;color:#ddd;font:14px system-ui,sa
 <button onclick="a('run `a` and list what you see')">a</button>
 <button onclick="a('show me the first 40 lines of a.c')">peek code</button>
 <a href=https://github.com/seanpattencode/a target=_blank>github ↗</a>
-<span class=r>live claude · seanpatten.com</span>
+<span class=r id=rt>live</span>
 </div>
 <div id=t></div>
 <script>
 var T=new Terminal({scrollback:10000,cursorBlink:true,fontSize:13}),F=new FitAddon.FitAddon(),E=document.getElementById('t');
 T.loadAddon(F);T.open(E);
-var ws=new WebSocket('wss://demo.seanpatten.com/ws');
-var fit=()=>{try{F.fit();ws.readyState===1&&ws.send(JSON.stringify({cols:T.cols,rows:T.rows}))}catch(e){}};
-ws.onopen=()=>{F.fit();ws.send(JSON.stringify({cols:T.cols,rows:T.rows}));T.focus()};
-ws.onmessage=e=>T.write(e.data);
-T.onData(d=>ws.readyState===1&&ws.send(d));
+var P=new URLSearchParams(location.search),AG=P.get('a')||'claude',ws;
+['Claude','Codex','Gemini'].forEach(n=>{var el=document.getElementById('b'+n);el.classList.toggle('sel',AG===n.toLowerCase())});
+document.getElementById('rt').textContent=AG;
+function connect(){
+  ws=new WebSocket('wss://demo.seanpatten.com/ws?w='+encodeURIComponent(AG));
+  var fit=()=>{try{F.fit();ws.readyState===1&&ws.send(JSON.stringify({cols:T.cols,rows:T.rows}))}catch(e){}};
+  ws.onopen=()=>{F.fit();ws.send(JSON.stringify({cols:T.cols,rows:T.rows}));T.focus()};
+  ws.onmessage=e=>T.write(e.data);
+  T.onData(d=>ws.readyState===1&&ws.send(d));
+  addEventListener('resize',fit);new ResizeObserver(fit).observe(E);
+}
+connect();
 function a(q){if(ws.readyState===1){ws.send(q+'\r');T.focus()}}
-addEventListener('resize',fit);new ResizeObserver(fit).observe(E);
+function pick(n){if(n===AG)return;P.set('a',n);location.search=P.toString()}
 addEventListener('click',()=>T.focus());
 requestAnimationFrame(()=>{F.fit();T.focus()});
 </script>
