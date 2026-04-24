@@ -2,5 +2,39 @@
 <meta charset=utf-8>
 <title>a — live demo</title>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<style>html,body,iframe{margin:0;padding:0;border:0;width:100%;height:100%;background:#000;overflow:hidden}</style>
-<iframe src="https://demo.seanpatten.com/op" allow="clipboard-read;clipboard-write"></iframe>
+<link rel=stylesheet href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css">
+<script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+<style>
+html,body{margin:0;height:100%;background:#000;color:#ddd;font:14px system-ui,sans-serif;overflow:hidden}
+#bar{display:flex;gap:6px;padding:8px 10px;border-bottom:1px solid #222;flex-wrap:wrap;align-items:center}
+#bar .l{color:#666;margin-right:4px;font-size:12px;letter-spacing:.5px}
+#bar button,#bar a{background:#111;color:#ccc;border:1px solid #2a2a2a;padding:6px 11px;cursor:pointer;font:13px system-ui;border-radius:3px;text-decoration:none;display:inline-block}
+#bar button:hover,#bar a:hover{background:#1c1c1c;border-color:#444;color:#fff}
+#bar .r{margin-left:auto;color:#555;font-size:11px}
+#t{height:calc(100vh - 43px);width:100vw}
+</style>
+<div id=bar>
+<span class=l>try:</span>
+<button onclick="a('what is a? one sentence.')">what is a?</button>
+<button onclick="a('give me a 4-bullet tour of a')">tour</button>
+<button onclick="a('run `a diff` and explain the number')">a diff</button>
+<button onclick="a('run `a` and list what you see')">a</button>
+<button onclick="a('show me the first 40 lines of a.c')">peek code</button>
+<a href=https://github.com/seanpattencode/a target=_blank>github ↗</a>
+<span class=r>live claude · seanpatten.com</span>
+</div>
+<div id=t></div>
+<script>
+var T=new Terminal({scrollback:10000,cursorBlink:true,fontSize:13}),F=new FitAddon.FitAddon(),E=document.getElementById('t');
+T.loadAddon(F);T.open(E);
+var ws=new WebSocket('wss://demo.seanpatten.com/ws');
+var fit=()=>{try{F.fit();ws.readyState===1&&ws.send(JSON.stringify({cols:T.cols,rows:T.rows}))}catch(e){}};
+ws.onopen=()=>{F.fit();ws.send(JSON.stringify({cols:T.cols,rows:T.rows}));T.focus()};
+ws.onmessage=e=>T.write(e.data);
+T.onData(d=>ws.readyState===1&&ws.send(d));
+function a(q){if(ws.readyState===1){ws.send(q+'\r');T.focus()}}
+addEventListener('resize',fit);new ResizeObserver(fit).observe(E);
+addEventListener('click',()=>T.focus());
+requestAnimationFrame(()=>{F.fit();T.focus()});
+</script>
