@@ -30,3 +30,4 @@ These numbers have not changed as of 11/18/25.
 It should also be noted 
 - Human reaction time on average is about 200ms, 0.2 seconds, and therefore this should be at the threshold where humans would perceive loading as instant. 
 - According to pagespeed google.com on desktop loads in 0.6 s
+1781256812
