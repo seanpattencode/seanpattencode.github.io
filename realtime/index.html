@@ -1,0 +1,45 @@
+<!doctype html><meta charset=utf8><title>i live</title>
+<!-- i web demo — real-time section. True push streams, zero backend, no keys, no rate
+     limits: BTC-USD trades (Coinbase websocket; Binance is geo-blocked here) + Wikipedia
+     edit firehose (Wikimedia SSE). RSS (e.g. Google News AI) is minutes-granularity pull —
+     wrong tool for per-second; it can join later as a slow panel.
+     Each row: det = when the source determined the event (exchange trade time / wiki edit
+     time) → rx = when this browser received it; lat = rx−det, which includes your local
+     clock skew (negative = local clock behind the source). Bar shows per-second avg lat. -->
+<style>
+html{background:#121212;color:#ddd;font:14px monospace}
+body{margin:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;height:100vh}
+#bar{grid-column:1/3;background:#000;padding:6px 8px;color:#0f0}
+section{overflow:hidden;border-top:1px solid #333}
+h2{margin:4px 8px;font-size:14px;color:#0f0}
+.e{padding:1px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.up{color:#4f4}.dn{color:#f55}
+</style>
+<div id=bar>i live — connecting…</div>
+<section><h2>BTC-USD trades — Coinbase · det → rx = lat</h2><div id=btc></div></section>
+<section><h2>Wikipedia edits — all wikis · det → rx = lat</h2><div id=wiki></div></section>
+<script>
+let nb=0,nw=0,last=0,lb=[],lw=[]
+const $=id=>document.getElementById(id)
+const ts=d=>d.toTimeString().slice(0,8)+'.'+String(d.getMilliseconds()).padStart(3,'0')
+const add=(el,t,c)=>{const d=document.createElement('div')
+  d.className='e '+(c||'');d.textContent=t;el.prepend(d)
+  while(el.children.length>50)el.lastChild.remove()}
+const row=(det,t)=>{const rx=new Date(),l=rx-det
+  return[`det ${ts(det)} rx ${ts(rx)} ${String(l).padStart(5)}ms  ${t}`,l]}
+const ws=new WebSocket('wss://ws-feed.exchange.coinbase.com')
+ws.onopen=()=>ws.send(JSON.stringify({type:'subscribe',product_ids:['BTC-USD'],channels:['matches']}))
+ws.onmessage=e=>{const m=JSON.parse(e.data)
+  if(m.type!=='match'&&m.type!=='last_match')return
+  const p=+m.price,[t,l]=row(new Date(m.time),`${p.toFixed(2)}  ${(+m.size).toFixed(6)} BTC  ${m.side}`)
+  nb++;lb.push(l);add($('btc'),t,p>=last?'up':'dn');last=p}
+const es=new EventSource('https://stream.wikimedia.org/v2/stream/recentchange')
+es.onmessage=e=>{const c=JSON.parse(e.data)
+  if(!c.title)return
+  const[t,l]=row(new Date(c.meta.dt),`${c.wiki}  ${c.user}: ${c.title}`)
+  nw++;lw.push(l);add($('wiki'),t)}
+const avg=a=>a.length?Math.round(a.reduce((x,y)=>x+y)/a.length)+'ms':'—'
+setInterval(()=>{$('bar').textContent=
+  `i live · ${ts(new Date())} · btc ${nb}/s lat ${avg(lb)} · wiki ${nw}/s lat ${avg(lw)} · BTC ${last.toFixed(2)}`
+  nb=nw=0;lb=[];lw=[]},1000)
+</script>
