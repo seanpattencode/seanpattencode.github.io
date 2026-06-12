@@ -30,4 +30,10 @@ These numbers have not changed as of 11/18/25.
 It should also be noted 
 - Human reaction time on average is about 200ms, 0.2 seconds, and therefore this should be at the threshold where humans would perceive loading as instant. 
 - According to pagespeed google.com on desktop loads in 0.6 s
+
+[/search/](https://seanpatten.com/search/) — search engine over the top 100,000 websites:
+- Index ships inside the page: 1.6 MB raw, 643 KB wire (gzip). No server, no request per keystroke.
+- All prefix completions to 3 chars precomputed once at load: 63 ms.
+- Measured per keystroke: 0–600 µs — results render before the next keystroke can physically arrive.
+- Address bar: add `https://seanpatten.com/search/?q=%s` as a custom search engine; trailing `!` jumps to top hit.
 1781256812
