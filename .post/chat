@@ -1,3 +1,3 @@
 #!/bin/sh
 [ -z "$1" ] && { echo "say something"; exit 0; }
-timeout 300 flock -n /tmp/.chat.lock ollama run gemma4:12b-it-qat "$1" 2>/dev/null || echo "[busy — one chat at a time, try again shortly]"
+timeout 300 flock -n /tmp/.chat.lock ollama run --think=false gemma4:12b-it-qat "$1" 2>/dev/null || echo "[busy — one chat at a time, try again shortly]"
