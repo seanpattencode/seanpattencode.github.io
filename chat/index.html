@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>chat — gemma 4</title>
+<style>html{color-scheme:dark}body{margin:0;background:#0b0b0b;color:#ddd;font:16px/1.6 system-ui;display:flex;flex-direction:column;height:100vh}
+#log{flex:1;overflow-y:auto;max-width:46em;width:100%;margin:0 auto;padding:16px;box-sizing:border-box}
+.m{margin:10px 0;white-space:pre-wrap;word-break:break-word}.u{color:#9cf}.u::before{content:"you  ";color:#456;font-size:13px}
+.g::before{content:"gemma4  ";color:#465;font-size:13px}
+#bar{border-top:1px solid #222;padding:10px;display:flex;gap:8px;max-width:46em;width:100%;margin:0 auto;box-sizing:border-box}
+input{flex:1;font:inherit;background:#161616;color:#ddd;border:1px solid #333;border-radius:8px;padding:9px 12px;outline:none}
+button{font:inherit;background:#1d3a2a;color:#9f9;border:1px solid #2a5a3a;border-radius:8px;padding:9px 16px;cursor:pointer}
+header{padding:9px 16px;border-bottom:1px solid #222;color:#888;font-size:13px}header a{color:#6af}</style>
+<header>minimal chat · <b style="color:#aaa">gemma 4</b> running on Sean's box (CPU) · streams live · <a href=/>home</a></header>
+<div id=log></div>
+<div id=bar><input id=q placeholder="message gemma 4…" autofocus><button id=s>send</button></div>
+<script>
+var H=[],log=document.getElementById('log'),q=document.getElementById('q'),s=document.getElementById('s'),busy=0;
+function add(cls,t){var d=document.createElement('div');d.className='m '+cls;d.textContent=t;log.appendChild(d);log.scrollTop=log.scrollHeight;return d}
+async function send(){
+  var t=q.value.trim();if(!t||busy)return;busy=1;s.disabled=true;q.value='';
+  add('u',t);H.push('User: '+t);
+  var el=add('g','…'),out='';
+  try{
+    var r=await fetch('https://demo.seanpatten.com/chat',{method:'POST',body:H.join('\n')+'\nAssistant:'});
+    var rd=r.body.getReader(),dec=new TextDecoder();
+    el.textContent='';
+    for(;;){var c=await rd.read();if(c.done)break;out+=dec.decode(c.value,{stream:true});el.textContent=out;log.scrollTop=log.scrollHeight}
+  }catch(e){el.textContent='x '+e}
+  H.push('Assistant: '+(out||'(no reply)'));busy=0;s.disabled=false;q.focus()
+}
+s.onclick=send;q.addEventListener('keydown',function(e){if(e.key==='Enter')send()});
+</script>
