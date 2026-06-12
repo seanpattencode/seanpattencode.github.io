@@ -1,0 +1,22 @@
+#!/bin/sh
+# per-keystroke search over the big public-repo corpus. body=$1, lines out: path\turl\texcerpt
+exec python3 - "$1" <<'EOF'
+import sys,json,time
+t0=time.time();q=(sys.argv[1] if len(sys.argv)>1 else '').lower().split()[:16]
+R=[]
+for l in open('/home/sean/a/adata/local/site_corpus.jsonl'):
+    d=json.loads(l);t=d['t'].lower();sc=0
+    for w in q:
+        c=min(t.count(w),64)+(100 if w in d['p'].lower() else 0)
+        if not c:sc=0;break
+        sc+=c
+    if sc and q:R.append((sc,d))
+R.sort(key=lambda x:-x[0])
+print(f"#{(time.time()-t0)*1000:.0f}ms scan, {len(R)} hits")
+for sc,d in R[:20]:
+    t=d['t'];i=t.lower().find(q[0])
+    a=t.rfind('\n',0,i)+1 if i>=0 else 0
+    b=t.find('\n',max(i,0));b=len(t)if b<0 else b
+    x=t[a:min(b,a+200)].replace('\t',' ').replace('\r',' ')
+    print(f"{d['p']}\t{d['u']}\t{x}")
+EOF
