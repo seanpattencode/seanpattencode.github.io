@@ -1,0 +1,10 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>unsuckify</title>
+<style>html{color-scheme:dark}body{font:18px/1.6 system-ui;max-width:40em;margin:10vh auto;padding:0 1em}input{font:inherit;padding:6px 10px;width:65%}button{font:inherit;padding:6px 14px}pre{white-space:pre-wrap;color:#cda;font:15px/1.6 ui-monospace,monospace}a{color:#6af}</style>
+<h1>unsuckify</h1>
+<p>Tell the machine what you suck at. It roasts you into being better — live from <a href=https://github.com/seanpattencode/unsuckifyai>unsuckifyai</a>, running on Sean's box. <a href=/games/>← games</a></p>
+<form onsubmit="go();return false"><input id=q placeholder="i suck at ..." autofocus><button>roast me</button></form>
+<pre id=o></pre>
+<script>function go(){var q=document.getElementById('q').value.trim(),o=document.getElementById('o');if(!q)return;o.textContent='computing how much you suck… (~30s)';fetch('https://demo.seanpatten.com/unsuck',{method:'POST',body:q}).then(function(r){return r.text()}).then(function(t){o.textContent=t}).catch(function(e){o.textContent='x '+e})}</script>

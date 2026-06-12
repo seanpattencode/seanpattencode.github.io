@@ -1,0 +1,2 @@
+#!/bin/sh
+flock -n /tmp/.sitepull.lock git -C /home/sean/seanpattencode.github.io pull --ff-only 2>&1 || echo busy
