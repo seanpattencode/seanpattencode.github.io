@@ -10,7 +10,7 @@
 input{flex:1;font:inherit;background:#161616;color:#ddd;border:1px solid #333;border-radius:8px;padding:9px 12px;outline:none}
 button{font:inherit;background:#1d3a2a;color:#9f9;border:1px solid #2a5a3a;border-radius:8px;padding:9px 16px;cursor:pointer}
 header{padding:9px 16px;border-bottom:1px solid #222;color:#888;font-size:13px}header a{color:#6af}</style>
-<header>minimal chat · <b style="color:#aaa">gemma 4</b> running on Sean's box (CPU) · streams live · <a href=/>home</a></header>
+<header>minimal chat · <b style="color:#aaa">gemma 4</b> on Sean's box (CPU) · first reply wakes the model (~30s), then streams · <a href=/>home</a></header>
 <div id=log></div>
 <div id=bar><input id=q placeholder="message gemma 4…" autofocus><button id=s>send</button></div>
 <script>
@@ -19,13 +19,14 @@ function add(cls,t){var d=document.createElement('div');d.className='m '+cls;d.t
 async function send(){
   var t=q.value.trim();if(!t||busy)return;busy=1;s.disabled=true;q.value='';
   add('u',t);H.push('User: '+t);
-  var el=add('g','…'),out='';
+  var el=add('g','…'),out='',t0=Date.now();
+  var tk=setInterval(function(){if(!out)el.textContent='thinking… '+((Date.now()-t0)/1000|0)+'s'},500);
   try{
     var r=await fetch('https://demo.seanpatten.com/chat',{method:'POST',body:H.join('\n')+'\nAssistant:'});
     var rd=r.body.getReader(),dec=new TextDecoder();
-    el.textContent='';
-    for(;;){var c=await rd.read();if(c.done)break;out+=dec.decode(c.value,{stream:true});el.textContent=out;log.scrollTop=log.scrollHeight}
+    for(;;){var c=await rd.read();if(c.done)break;var p=dec.decode(c.value,{stream:true});if(p){out+=p;clearInterval(tk);el.textContent=out;log.scrollTop=log.scrollHeight}}
   }catch(e){el.textContent='x '+e}
+  clearInterval(tk);
   H.push('Assistant: '+(out||'(no reply)'));busy=0;s.disabled=false;q.focus()
 }
 s.onclick=send;q.addEventListener('keydown',function(e){if(e.key==='Enter')send()});

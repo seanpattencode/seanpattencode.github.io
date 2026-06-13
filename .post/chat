@@ -1,7 +1,7 @@
 #!/bin/sh
 [ -z "$1" ] && { echo "say something"; exit 0; }
 P=$(printf '%s' "$1" | python3 -c 'import json,sys;print(json.dumps(sys.stdin.read()))')
-timeout 300 flock -n /tmp/.chat.lock sh -c "curl -sN -m 290 http://localhost:11434/api/generate -d '{\"model\":\"gemma4:12b-it-qat\",\"prompt\":$P,\"think\":false,\"stream\":true}' | python3 -c 'import json,sys
+timeout 300 flock -n /tmp/.chat.lock sh -c "curl -sN -m 290 http://localhost:11434/api/generate -d '{\"model\":\"gemma4:e2b\",\"prompt\":$P,\"think\":false,\"stream\":true,\"keep_alive\":\"30m\",\"options\":{\"num_predict\":256}}' | python3 -c 'import json,sys
 for l in sys.stdin:
  l=l.strip()
  if not l:continue
