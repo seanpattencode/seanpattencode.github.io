@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-# search index = top 100k real websites (Majestic Million), injected into search/index.html.
-import json,pathlib,re,subprocess
+# search index = top 100k real websites (Majestic Million) -> search/domains.txt, rank order.
+# the page streams this file and builds prefix tables incrementally; html needs no regeneration.
+import pathlib,subprocess
 N=100000
 SITE=pathlib.Path(__file__).resolve().parent
 cache=pathlib.Path('/home/sean/a/adata/local/top_domains.txt')
@@ -11,8 +12,6 @@ if not cache.exists() or len(cache.read_text().split())<N:
     assert len(doms)>N*0.9,'download failed'
     cache.write_text('\n'.join(doms))
 doms=cache.read_text().split()[:N]
-js=json.dumps(doms,separators=(',',':')).replace('</','<\\/')
-page=SITE/'search/index.html'
-page.write_text(re.sub(r'(<script id=idx type=application/json>).*?(</script>)',
-    lambda m:m.group(1)+js+m.group(2),page.read_text(),flags=re.S))
-print(f"{len(doms)} domains {len(js)>>10}KB -> {page}")
+out=SITE/'search'/'domains.txt'
+out.write_text('\n'.join(doms)+'\n')
+print(f"{len(doms)} domains {out.stat().st_size>>10}KB -> {out}")

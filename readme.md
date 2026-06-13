@@ -32,8 +32,9 @@ It should also be noted
 - According to pagespeed google.com on desktop loads in 0.6 s
 
 [/search/](https://seanpatten.com/search/) — search engine over the top 100,000 websites:
-- Index ships inside the page: 1.6 MB raw, 643 KB wire (gzip). No server, no request per keystroke.
-- All prefix completions to 3 chars precomputed once at load: 63 ms.
+- Page is 2.8 KB (1.6 KB gzipped) — same weight class as this site. First paint ≤200 ms.
+- The 100k-domain index (`domains.txt`, 630 KB gzip) streams *after* first paint, in rank order — google.com is in the first chunk, so the box is usable before the stream finishes. Full stream + index build: ~200 ms.
+- Prefix tables (all completions to 3 chars) built incrementally as the stream arrives. No server, no request per keystroke.
 - Measured per keystroke: 0–600 µs — results render before the next keystroke can physically arrive.
 - Address bar: add `https://seanpatten.com/search/?q=%s` as a custom search engine; trailing `!` jumps to top hit.
 1781256812
