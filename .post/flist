@@ -1,0 +1,3 @@
+#!/bin/sh
+F=/home/sean/a/adata/forum;T=$(printf '\t');[ -f "$F/p.txt" ]||exit 0
+while IFS=$T read -r id rest;do s=$(stat -c%s "$F/v/$id" 2>/dev/null||echo 0);printf '%s\t%s\t%s\n' "$s" "$id" "$rest";done<"$F/p.txt"

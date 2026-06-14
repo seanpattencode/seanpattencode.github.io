@@ -1,0 +1,14 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>forum</title>
+<style>body{background:#0b0b0b;color:#ddd;font:15px/1.6 system-ui;max-width:46em;margin:0 auto;padding:16px}a{color:#6af}input{background:#161616;color:#ddd;border:1px solid #333;border-radius:6px;padding:7px;font:inherit}button{cursor:pointer;background:#1d3a2a;color:#9f9;border:1px solid #2a5a3a;border-radius:6px;padding:7px 12px;font:inherit}.v{cursor:pointer;color:#9f9;user-select:none}p{margin:8px 0}</style>
+<h3>forum</h3>
+<form id=f><input id=t1 placeholder=title required size=24> <input id=u1 placeholder="url (optional)" size=18> <button>post</button></form>
+<div id=l>loading…</div>
+<script>
+var API='https://demo.seanpatten.com/',esc=s=>(s||'').replace(/[&<>"]/g,m=>'&#'+m.charCodeAt(0)+';')
+function V(id){fetch(API+'fvote',{method:'POST',body:id}).then(load)}
+async function load(){var x=await(await fetch(API+'flist',{method:'POST'})).text()
+ l.innerHTML=(x.trim()?x.trim().split('\n'):[]).map(r=>r.split('\t')).sort((a,b)=>b[0]-a[0]).map(c=>
+  '<p><span class=v onpointerdown=V('+c[1]+')>▲ '+c[0]+'</span> '+(/^https?:\/\//.test(c[3])?'<a target=_blank href="'+esc(c[3])+'">'+esc(c[2])+'</a>':esc(c[2]))+'</p>').join('')}
+f.onsubmit=e=>{e.preventDefault();fetch(API+'fpost',{method:'POST',body:t1.value+'\t'+u1.value}).then(()=>{t1.value=u1.value='';load()})}
+load()
+</script>

@@ -1,0 +1,3 @@
+#!/bin/sh
+case $1 in ''|*[!0-9]*)echo bad;exit;;esac
+D=/home/sean/a/adata/forum/v;mkdir -p "$D";printf x >>"$D/$1";echo ok
