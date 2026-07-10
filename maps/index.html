@@ -11,14 +11,14 @@
   #cap b{color:#7fd} #cap a{color:#9cf}
 </style>
 <div id="map"></div>
-<div id="cap">🛰 <b>Live</b> Earth · GOES-East over today's global base · <span id="t">loading…</span> · <a href="/">seanpatten.com</a></div>
+<div id="cap">🛰 <b>Live</b> Earth · GOES-East clouds over a seamless base · <span id="t">loading…</span> · <a href="/">seanpatten.com</a></div>
 <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
 <script>
-// Full-globe base = VIIRS true-color mosaic (yesterday UTC = guaranteed complete, whole planet).
-const day  = new Date(Date.now() - 864e5).toISOString().slice(0,10);
+// Seamless static ground. (A same-day orbital mosaic has a day-boundary seam where
+// passes taken ~24h apart meet; the ground doesn't change hour-to-hour, only clouds do.)
 const BASE = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/'
-           + 'VIIRS_SNPP_CorrectedReflectance_TrueColor/default/' + day
-           + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg';
+           + 'BlueMarble_ShadedRelief_Bathymetry/default/default'
+           + '/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg';
 // Live layer = near-real-time GOES-East GeoColor ("default" time = latest scan).
 const GOES = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/'
            + 'GOES-East_ABI_GeoColor/default/default/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png';
@@ -27,8 +27,8 @@ const map = new maplibregl.Map({
   container:'map', center:[-60,15], zoom:1.6, maxZoom:9,
   style:{version:8,
     projection:{type:'globe'},                          // <-- round 3D Earth
-    sources:{ base:{type:'raster',tiles:[BASE],tileSize:256,maxzoom:9,
-                    attribution:'NASA GIBS · VIIRS · NOAA GOES-East'} },
+    sources:{ base:{type:'raster',tiles:[BASE],tileSize:256,maxzoom:8,
+                    attribution:'NASA GIBS · Blue Marble · NOAA GOES-East'} },
     layers:[
       {id:'space',type:'background',paint:{'background-color':'#000'}},
       {id:'base', type:'raster',source:'base'}
