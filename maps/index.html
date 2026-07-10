@@ -7,49 +7,45 @@
   html,body,#map{margin:0;height:100%;background:#000}
   #cap{position:fixed;left:10px;bottom:10px;z-index:1;color:#fff;
        font:13px/1.4 system-ui,sans-serif;background:rgba(0,0,0,.55);
-       padding:6px 10px;border-radius:8px;max-width:90vw}
+       padding:6px 10px;border-radius:8px;max-width:92vw}
   #cap b{color:#7fd} #cap a{color:#9cf}
 </style>
 <div id="map"></div>
-<div id="cap">🛰 <b>Live</b> Earth · GOES-East clouds over a seamless base · <span id="t">loading…</span> · <a href="/">seanpatten.com</a></div>
+<div id="cap">🛰 <b>Live</b> Earth · GOES-East+West clouds over Blue Marble · <span id="t">loading…</span> · <a href="/">seanpatten.com</a></div>
 <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
 <script>
-// Seamless static ground. (A same-day orbital mosaic has a day-boundary seam where
-// passes taken ~24h apart meet; the ground doesn't change hour-to-hour, only clouds do.)
-const BASE = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/'
-           + 'BlueMarble_ShadedRelief_Bathymetry/default/default'
-           + '/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg';
-// Live layer = near-real-time GOES-East GeoColor ("default" time = latest scan).
-const GOES = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/'
-           + 'GOES-East_ABI_GeoColor/default/default/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png';
+// Seamless static ground + live geostationary clouds (the ground doesn't change hourly, only the weather does).
+const P  = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/';
+const BM = P+'BlueMarble_ShadedRelief_Bathymetry/default/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg';
+const GE = P+'GOES-East_ABI_GeoColor/default/default/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png';   // Americas + Atlantic
+const GW = P+'GOES-West_ABI_GeoColor/default/default/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png';   // Pacific
+// (Europe/Asia/Africa show the static base — Himawari/Meteosat aren't on NASA's free feed.)
 
 const map = new maplibregl.Map({
-  container:'map', center:[-60,15], zoom:1.6, maxZoom:9,
-  style:{version:8,
-    projection:{type:'globe'},                          // <-- round 3D Earth
-    sources:{ base:{type:'raster',tiles:[BASE],tileSize:256,maxzoom:8,
-                    attribution:'NASA GIBS · Blue Marble · NOAA GOES-East'} },
+  container:'map', center:[-95,15], zoom:1.55, maxZoom:9,
+  style:{version:8, projection:{type:'globe'},          // round 3D Earth
+    sources:{
+      base :{type:'raster',tiles:[BM],tileSize:256,maxzoom:8,
+             attribution:'NASA GIBS · Blue Marble · NOAA GOES-East/West'},
+      goesW:{type:'raster',tiles:[GW],tileSize:256,maxzoom:7},
+      goesE:{type:'raster',tiles:[GE],tileSize:256,maxzoom:7}
+    },
     layers:[
       {id:'space',type:'background',paint:{'background-color':'#000'}},
-      {id:'base', type:'raster',source:'base'}
+      {id:'base', type:'raster',source:'base'},
+      {id:'goesW',type:'raster',source:'goesW'},        // East drawn over West in the overlap
+      {id:'goesE',type:'raster',source:'goesE'}
     ]
   }
 });
 map.addControl(new maplibregl.NavigationControl({visualizePitch:true}));
 
-function refreshGoes(){
-  const url = GOES + '?_=' + Date.now();                // cache-bust -> newest scan
-  const s = map.getSource('goes');
-  if(s){ s.setTiles([url]); }
-  else{
-    map.addSource('goes',{type:'raster',tiles:[url],tileSize:256,maxzoom:7});
-    map.addLayer({id:'goes',type:'raster',source:'goes'});
-  }
-  document.getElementById('t').textContent = 'live updated ' + new Date().toLocaleTimeString();
+function refresh(){                                      // pull the newest scans
+  const b='?_='+Date.now();
+  const w=map.getSource('goesW'), e=map.getSource('goesE');
+  if(w) w.setTiles([GW+b]);
+  if(e) e.setTiles([GE+b]);
+  document.getElementById('t').textContent='live updated '+new Date().toLocaleTimeString();
 }
-map.on('load', ()=>{
-  try{ map.setProjection({type:'globe'}); }catch(e){}   // belt-and-suspenders for globe
-  refreshGoes();
-  setInterval(refreshGoes, 5*60*1000);
-});
+map.on('load',()=>{ try{map.setProjection({type:'globe'})}catch(e){} refresh(); setInterval(refresh,5*60*1000); });
 </script>
