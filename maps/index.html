@@ -1,40 +1,55 @@
 <!doctype html>
 <meta charset="utf-8">
-<title>Live Earth — GOES</title>
+<title>Live Earth — 3D</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css">
 <style>
-  html,body,#map{margin:0;height:100%}
+  html,body,#map{margin:0;height:100%;background:#000}
   #cap{position:fixed;left:10px;bottom:10px;z-index:1;color:#fff;
        font:13px/1.4 system-ui,sans-serif;background:rgba(0,0,0,.55);
-       padding:6px 10px;border-radius:8px}
-  #cap b{color:#7fd}
-  #cap a{color:#9cf}
+       padding:6px 10px;border-radius:8px;max-width:90vw}
+  #cap b{color:#7fd} #cap a{color:#9cf}
 </style>
 <div id="map"></div>
-<div id="cap">🛰 <b>Live</b> GOES-East · <span id="t">loading…</span> · <a href="/">seanpatten.com</a></div>
-<script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
+<div id="cap">🛰 <b>Live</b> Earth · GOES-East over today's global base · <span id="t">loading…</span> · <a href="/">seanpatten.com</a></div>
+<script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
 <script>
-// Near-real-time GOES-East GeoColor from NASA GIBS (public, no key, "default" = latest).
+// Full-globe base = VIIRS true-color mosaic (yesterday UTC = guaranteed complete, whole planet).
+const day  = new Date(Date.now() - 864e5).toISOString().slice(0,10);
+const BASE = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/'
+           + 'VIIRS_SNPP_CorrectedReflectance_TrueColor/default/' + day
+           + '/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg';
+// Live layer = near-real-time GOES-East GeoColor ("default" time = latest scan).
 const GOES = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/'
            + 'GOES-East_ABI_GeoColor/default/default/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png';
 
 const map = new maplibregl.Map({
-  container:'map', center:[-90,25], zoom:3.2, maxZoom:9,
-  style:{version:8, sources:{}, layers:[{id:'bg',type:'background',paint:{'background-color':'#000'}}]}
+  container:'map', center:[-60,15], zoom:1.6, maxZoom:9,
+  style:{version:8,
+    projection:{type:'globe'},                          // <-- round 3D Earth
+    sources:{ base:{type:'raster',tiles:[BASE],tileSize:256,maxzoom:9,
+                    attribution:'NASA GIBS · VIIRS · NOAA GOES-East'} },
+    layers:[
+      {id:'space',type:'background',paint:{'background-color':'#000'}},
+      {id:'base', type:'raster',source:'base'}
+    ]
+  }
 });
-map.addControl(new maplibregl.NavigationControl());
+map.addControl(new maplibregl.NavigationControl({visualizePitch:true}));
 
-function refresh(){
-  const url = GOES + '?_=' + Date.now();           // cache-bust so we pull the newest scan
-  const src = map.getSource('goes');
-  if(src){ src.setTiles([url]); }
+function refreshGoes(){
+  const url = GOES + '?_=' + Date.now();                // cache-bust -> newest scan
+  const s = map.getSource('goes');
+  if(s){ s.setTiles([url]); }
   else{
-    map.addSource('goes',{type:'raster',tiles:[url],tileSize:256,maxzoom:7,
-      attribution:'NASA GIBS · NOAA GOES-East'});
+    map.addSource('goes',{type:'raster',tiles:[url],tileSize:256,maxzoom:7});
     map.addLayer({id:'goes',type:'raster',source:'goes'});
   }
-  document.getElementById('t').textContent = 'updated ' + new Date().toLocaleTimeString();
+  document.getElementById('t').textContent = 'live updated ' + new Date().toLocaleTimeString();
 }
-map.on('load', ()=>{ refresh(); setInterval(refresh, 5*60*1000); });
+map.on('load', ()=>{
+  try{ map.setProjection({type:'globe'}); }catch(e){}   // belt-and-suspenders for globe
+  refreshGoes();
+  setInterval(refreshGoes, 5*60*1000);
+});
 </script>
