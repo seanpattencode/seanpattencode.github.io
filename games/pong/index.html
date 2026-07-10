@@ -25,6 +25,8 @@ small{color:#888}
  <p><small>move: mouse · touch · W/S · ↑/↓ — first to 11</small></p>
  <p><small><a href=/games/>← games</a></small></p>
 </div>
+<audio id=bgm src="pixel-dreams.mp3" loop preload=auto></audio>
+<script>{const b=document.getElementById('bgm'),go=()=>b.play().catch(()=>{});addEventListener('pointerdown',go,{once:true});addEventListener('keydown',go,{once:true})}</script>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
 const W=1.5,H=1,PH=.18,PW=.022,IN=.03,BR=.017,WIN=11
