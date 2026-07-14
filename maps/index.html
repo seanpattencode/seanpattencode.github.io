@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <title>Live Earth — 3D</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css">
 <style>
   html,body,#map{margin:0;height:100%;background:#000}
   #cap{position:fixed;left:10px;bottom:10px;z-index:1;color:#fff;
@@ -11,8 +11,8 @@
   #cap b{color:#7fd} #cap a{color:#9cf}
 </style>
 <div id="map"></div>
-<div id="cap">🛰 <b>Live</b> Earth · GOES-East+West clouds over Blue Marble · <span id="t">loading…</span> · <a href="/">seanpatten.com</a></div>
-<script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+<div id="cap">🛰 Earth · GOES-East+West clouds (latest NASA GIBS scan, ~1–2h behind) over Blue Marble · <span id="t">loading…</span> · <a href="/">seanpatten.com</a></div>
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
 <script>
 // Seamless static ground + live geostationary clouds (the ground doesn't change hourly, only the weather does).
 const P  = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/';
