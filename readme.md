@@ -6,7 +6,7 @@ Features:
 Stripped down to be as performant as possible, with objective of fast loading times and smooth user experience.
 - No images or externally loaded resources.
 - Native system fonts only. No layout shift, no extra requests.
-- Single file, ~3 KB.
+- Single file, ~5 KB (2.7 KB gzipped).
 - No favicon request.
 
 Tag set: strict subset of Tim Berners-Lee's original 1991 HTML — `<title>`, `<h1>`–`<h3>`, `<p>`, `<a>`, `<ul>`, `<li>`, `<hr>`, `<i>`, `<b>`. No `<div>`, `<section>`, `<header>`, `<article>` — none of those existed in 1991 and they aren't needed. Plus `<meta charset>` + `<meta viewport>` + a 11-line `<style>` block for modern typography (system-ui font, max-width, dark-mode aware via `color-scheme: light dark`). The semantic content renders correctly in every browser ever shipped, including 1993 Mosaic and text-only browsers like Lynx — the CSS is the only thing newer than 2009.
