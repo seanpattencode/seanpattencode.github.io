@@ -38,3 +38,8 @@ It should also be noted
 - Measured per keystroke: 0–600 µs — results render before the next keystroke can physically arrive.
 - Address bar: add `https://seanpatten.com/search/?q=%s` as a custom search engine; trailing `!` jumps to top hit.
 1781256812
+
+Static / dynamic split:  
+The domain serves two kinds of content.
+- Static (this repo, GitHub Pages): the single-file home page and the pages under [/games/](https://seanpatten.com/games/). This includes two-player [pong](https://seanpatten.com/games/pong/), playable live over the internet with no game server at all: WebRTC pairs the two players peer-to-peer at roughly frame latency, so real-time multiplayer works from a purely static site.
+- Dynamic ([/live/](https://seanpatten.com/live/) and [unsuckify](https://seanpatten.com/games/unsuckify/)): served from my own machine through a Cloudflare tunnel by a custom webserver I wrote in C, [`a serve` (lib/serve.c)](https://github.com/seanpattencode/a/blob/main/lib/serve.c): a dependency-free HTTP + WebSocket server (hand-rolled SHA-1 WebSocket handshake, static-dir mode, pty shell over /ws), kept alive across reboots. These pages have real server state.
