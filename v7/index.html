@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unix V7 in your browser — seanpatten.com</title>
+<link rel="icon" href="data:,">
+
+<style>
+  :root { color-scheme: dark; }
+  html,body { margin:0; height:100%; background:#0b0e12; color:#c9d3df;
+    font:14px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+  header { padding:10px 14px; border-bottom:1px solid #1d2530; }
+  header b { color:#e8eef6; } header span { color:#7d8aa0; }
+  a { color:#6ea8fe; }
+  #term { margin:0; padding:12px 14px; white-space:pre-wrap; word-break:break-word;
+    outline:none; overflow-y:auto; height:calc(100vh - 96px); }
+  #foot { position:fixed; bottom:0; left:0; right:0; padding:6px 14px;
+    border-top:1px solid #1d2530; background:#0b0e12; color:#7d8aa0; }
+  #foot b { color:#9ece6a; }
+</style>
+</head>
+<body>
+<header><b>Unix V7 (1979)</b> <span>— the real kernel, x86 port, booting in v86. click and type. <a href="/">seanpatten.com</a></span></header>
+<pre id="term" tabindex="0">booting…
+</pre>
+<div id="foot">status: <b id="st">loading v86…</b> &nbsp; boot: <b id="bt">–</b> &nbsp; render: <b id="rt">–</b></div>
+
+<script src="libv86.js"></script>
+<script>
+const term = document.getElementById("term");
+const st = document.getElementById("st"), bt = document.getElementById("bt"), rt = document.getElementById("rt");
+let buf = "booting…\n", booted = false;
+const t0 = performance.now();
+
+function flush() {
+  const s = performance.now();
+  term.textContent = buf;
+  term.scrollTop = term.scrollHeight;
+  rt.textContent = (performance.now() - s).toFixed(3) + " ms";
+}
+
+const emu = new V86({
+  wasm_path: "v86.wasm",
+  bios:     { url: "seabios.bin" },
+  vga_bios: { url: "vgabios.bin" },
+  multiboot:{ url: "kernel.elf" },
+  memory_size: 16 * 1024 * 1024,
+  vga_memory_size: 2 * 1024 * 1024,
+  autostart: true,
+});
+
+emu.add_listener("emulator-ready", () => st.textContent = "running");
+
+let pending = false;
+emu.add_listener("serial0-output-byte", (byte) => {
+  const c = String.fromCharCode(byte);
+  if (byte === 13) { /* CR: ignore, LF handles newline */ }
+  else if (byte === 8) buf = buf.slice(0, -1);   // \b — also nets out V7's "\b \b" erase
+  else buf += c;
+  if (!booted && buf.trimEnd().endsWith("#")) {   // first shell prompt
+    booted = true;
+    bt.textContent = (performance.now() - t0).toFixed(1) + " ms";
+    st.textContent = "V7 shell ready";
+  }
+  if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; flush(); }); }
+});
+
+// keystrokes → V7 serial console (V7 echoes them back to us)
+term.addEventListener("keydown", (e) => {
+  if (e.ctrlKey || e.altKey || e.metaKey) return;
+  let s = null;
+  if (e.key === "Enter") s = "\r";
+  else if (e.key === "Backspace") s = "\x7f";
+  else if (e.key === "Tab") s = "\t";
+  else if (e.key.length === 1) s = e.key;
+  if (s !== null) { emu.serial0_send(s); e.preventDefault(); }
+});
+term.focus();
+</script>
+</body>
+</html>
