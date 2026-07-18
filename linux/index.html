@@ -27,7 +27,7 @@
 <body>
 <header><b>Smallest possible Linux</b>
 <span>— real kernels in v86, serial console. click terminal, type.</span>
-<button id="bTiny" class="on">boot ours: 1.9 MB, kernel+1 binary → shell</button>
+<button id="bTiny" class="on">boot ours: 2.3 MB, kernel+busybox+V7 → shell</button>
 <button id="bBare">boot generic bare: Alpine kernel, nothing else → watch it panic</button>
 <button id="bInit">boot generic + init: same kernel + 1-file initrd → shell</button>
 <span><a href="/">seanpatten.com</a></span>
@@ -43,9 +43,12 @@ an interactive CLI is ONE static binary as PID 1:
   qemu-system-i386 -kernel bzImage -initrd rd.cpio -nographic -append 'console=ttyS0 rdinit=/bin/sh'
 
 "ours" = Linux 6.19.11 i386 tinyconfig + serial console, busybox embedded
-INSIDE the image (CONFIG_INITRAMFS_SOURCE) — one 1.9 MB file, boots to ash.
+INSIDE the image (CONFIG_INITRAMFS_SOURCE) — one 2.3 MB file, boots to ash.
+Then type <b>fredix</b>: Unix V7 (1979) runs as a single static process
+INSIDE this Linux (<a href="https://github.com/seanpattencode/fredix/tree/main/v7p">v7p</a>, gcc -m32 -static; 'exit' returns to ash).
 "generic + init" = the SAME Alpine kernel that panics bare, plus exactly that
-recipe as <a href="init.cpio.gz">init.cpio.gz</a> (1.1 MB: busybox + 9-line /init) — and it boots to a shell.
+recipe as <a href="init.cpio.gz">init.cpio.gz</a> (1.4 MB: busybox + fredix + 9-line /init) — and it boots to a shell.
+Build recipe: <a href="https://github.com/seanpattencode/fredix/tree/main/tiny-linux">fredix/tiny-linux</a>.
 Sources: <a href="https://kernel.org">kernel.org</a> (GPLv2),
 <a href="https://deb.debian.org/debian/pool/main/b/busybox/">Debian busybox-static 1.38 i386</a>,
 <a href="https://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/x86/netboot/">Alpine 3.24 x86 vmlinuz-lts</a>.
@@ -60,12 +63,12 @@ const term = document.getElementById("term");
 const st = document.getElementById("st"), kn = document.getElementById("kn"),
       bt = document.getElementById("bt"), rt = document.getElementById("rt");
 const KERNELS = {
-  tiny: { url:"tiny.bzImage", btn:"bTiny", label:"ours 1.9MB (6.19.11 tinyconfig + busybox)", mem:32,
-          done:/~ # $/, doneMsg:"shell ready" },
+  tiny: { url:"tiny.bzImage", btn:"bTiny", label:"ours 2.3MB (6.19.11 tinyconfig + busybox + V7)", mem:32,
+          done:/~ # $/, doneMsg:"shell ready — try: fredix" },
   bare: { url:"alpine-vmlinuz-lts", btn:"bBare", label:"Alpine 6.18-lts 8.6MB, bare", mem:128,
           done:/Kernel panic - not syncing/, doneMsg:"panicked — a bare kernel can do nothing else" },
   init: { url:"alpine-vmlinuz-lts", btn:"bInit", initrd:"init.cpio.gz",
-          label:"Alpine 6.18-lts 8.6MB + 1.1MB one-binary initrd", mem:128,
+          label:"Alpine 6.18-lts 8.6MB + 1.4MB initrd (busybox+V7)", mem:128,
           done:/~ # $/, doneMsg:"shell ready — same kernel that just panicked, one binary added" },
 };
 let emu = null, buf = "", booted = false, t0 = 0, pending = false;
