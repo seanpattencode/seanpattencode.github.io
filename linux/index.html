@@ -73,6 +73,7 @@ let esc = 0, escSeq = "";   // 0 normal, 1 saw ESC, 2 in CSI
 
 function flush() {
   const s = performance.now();
+  if (buf.length > 131072) buf = buf.slice(-98304);   // cap scrollback, bound render cost
   term.textContent = buf;
   term.scrollTop = term.scrollHeight;
   rt.textContent = (performance.now() - s).toFixed(3) + " ms";
@@ -81,10 +82,10 @@ function onByte(byte, k) {
   const c = String.fromCharCode(byte);
   if (esc === 1) { esc = (c === "[") ? 2 : 0; escSeq = ""; return; }
   if (esc === 2) {
-    if (byte >= 0x40 && byte <= 0x7e) {           // CSI final byte
-      if (escSeq + c === "6n") emu.serial0_send("\x1b[1;1R");  // ash asks cursor pos
-      esc = 0;
-    } else escSeq += c;
+    if (byte >= 0x40 && byte <= 0x7e) esc = 0;    // CSI final byte — drop whole seq
+    else escSeq += c;
+    // note: deliberately no reply to ESC[6n — a late reply races into ash's
+    // input queue and injects ";1R" garbage; busybox copes fine with silence
     return;
   }
   if (byte === 27) { esc = 1; return; }
