@@ -29,6 +29,7 @@
 <span>— real kernels in v86, serial console. click terminal, type.</span>
 <button id="bTiny" class="on">boot ours: 1.9 MB, kernel+1 binary → shell</button>
 <button id="bBare">boot generic bare: Alpine kernel, nothing else → watch it panic</button>
+<button id="bInit">boot generic + init: same kernel + 1-file initrd → shell</button>
 <span><a href="/">seanpatten.com</a></span>
 </header>
 <details><summary>what am I looking at / minimum recipe</summary>
@@ -43,6 +44,8 @@ an interactive CLI is ONE static binary as PID 1:
 
 "ours" = Linux 6.19.11 i386 tinyconfig + serial console, busybox embedded
 INSIDE the image (CONFIG_INITRAMFS_SOURCE) — one 1.9 MB file, boots to ash.
+"generic + init" = the SAME Alpine kernel that panics bare, plus exactly that
+recipe as <a href="init.cpio.gz">init.cpio.gz</a> (1.1 MB: busybox + 9-line /init) — and it boots to a shell.
 Sources: <a href="https://kernel.org">kernel.org</a> (GPLv2),
 <a href="https://deb.debian.org/debian/pool/main/b/busybox/">Debian busybox-static 1.38 i386</a>,
 <a href="https://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/x86/netboot/">Alpine 3.24 x86 vmlinuz-lts</a>.
@@ -57,10 +60,13 @@ const term = document.getElementById("term");
 const st = document.getElementById("st"), kn = document.getElementById("kn"),
       bt = document.getElementById("bt"), rt = document.getElementById("rt");
 const KERNELS = {
-  tiny: { url:"tiny.bzImage", label:"ours 1.9MB (6.19.11 tinyconfig + busybox)", mem:32,
+  tiny: { url:"tiny.bzImage", btn:"bTiny", label:"ours 1.9MB (6.19.11 tinyconfig + busybox)", mem:32,
           done:/~ # $/, doneMsg:"shell ready" },
-  bare: { url:"alpine-vmlinuz-lts", label:"Alpine 6.18-lts 8.6MB, bare", mem:128,
+  bare: { url:"alpine-vmlinuz-lts", btn:"bBare", label:"Alpine 6.18-lts 8.6MB, bare", mem:128,
           done:/Kernel panic - not syncing/, doneMsg:"panicked — a bare kernel can do nothing else" },
+  init: { url:"alpine-vmlinuz-lts", btn:"bInit", initrd:"init.cpio.gz",
+          label:"Alpine 6.18-lts 8.6MB + 1.1MB one-binary initrd", mem:128,
+          done:/~ # $/, doneMsg:"shell ready — same kernel that just panicked, one binary added" },
 };
 let emu = null, buf = "", booted = false, t0 = 0, pending = false;
 let esc = 0, escSeq = "";   // 0 normal, 1 saw ESC, 2 in CSI
@@ -96,10 +102,10 @@ function boot(name) {
   if (emu) { try { emu.destroy(); } catch(e){} emu = null; }
   buf = ""; booted = false; esc = 0; flush();
   kn.textContent = k.label; st.textContent = "booting…"; bt.textContent = "–";
-  document.getElementById("bTiny").className = name === "tiny" ? "on" : "";
-  document.getElementById("bBare").className = name === "bare" ? "on" : "";
+  for (const kk of Object.values(KERNELS))
+    document.getElementById(kk.btn).className = kk === k ? "on" : "";
   t0 = performance.now();
-  emu = new V86({
+  const opts = {
     wasm_path: "../v7/v86.wasm",
     bios:     { url: "../v7/seabios.bin" },
     vga_bios: { url: "../v7/vgabios.bin" },
@@ -108,15 +114,17 @@ function boot(name) {
     memory_size: k.mem * 1024 * 1024,
     vga_memory_size: 2 * 1024 * 1024,
     autostart: true,
-  });
+  };
+  if (k.initrd) opts.initrd = { url: k.initrd };
+  emu = new V86(opts);
   emu.add_listener("serial0-output-byte", (b) => {
     onByte(b, k);
     if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; flush(); }); }
   });
   term.focus();
 }
-document.getElementById("bTiny").onclick = () => boot("tiny");
-document.getElementById("bBare").onclick = () => boot("bare");
+for (const [name, kk] of Object.entries(KERNELS))
+  document.getElementById(kk.btn).onclick = () => boot(name);
 term.addEventListener("keydown", (e) => {
   if (!emu || e.ctrlKey || e.altKey || e.metaKey) return;
   let s = null;
