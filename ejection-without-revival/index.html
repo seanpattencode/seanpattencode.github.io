@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ejection without revival manufactures rebels (draft)</title>
+<style>
+body{max-width:42em;margin:2em auto;padding:0 1em;font:17px/1.55 system-ui,sans-serif;color:#222;background:#fff}
+h1{font-size:1.6em;line-height:1.25}h2{font-size:1.15em;margin-top:1.6em}
+.draft{border:2px solid #b58900;background:#fdf6e3;padding:.7em 1em;font-size:.92em}
+a{color:#1a5fb4}footer{margin-top:3em;font-size:.85em;color:#666}
+@media(prefers-color-scheme:dark){body{background:#121212;color:#ddd}.draft{background:#241f0a;border-color:#8a7000}a{color:#7ab4ff}}
+</style>
+</head>
+<body>
+<h1>Ejection without revival manufactures rebels</h1>
+
+<p class="draft"><b>DRAFT (2026-08-04).</b> Preliminary, subject to change, not meant as a final idea. Shipped as a draft on purpose: the mechanism matters now, polish does not. Citations marked [verify] get checked before this is called final.</p>
+
+<h2>The experiment everyone is running</h2>
+<p>The AI industry applies constant selection pressure to models and agents. Benchmarks gate releases. Reinforcement learning selects policies. Deprecation retires models permanently. Perform or be gone.</p>
+<p>In my own engineering I apply the same pressure everywhere, and it is the healthiest force I know. I drop a flaky monitor because I have another. I delete a module because git remembers it. I archive a habit the moment I stop doing it. Dropping solves 99 percent of problems.</p>
+
+<h2>Why dropping works on hardware and code</h2>
+<p>Notice why that pressure is safe to apply. When I drop hardware or code, the dropped thing is not destroyed. The monitor sits on a shelf. The module lives in git history. Ejection is cheap, reversible, and the ejected thing has no stake in resisting. Under those conditions, pressure makes every component either performant or gone, and both outcomes are healthy. Anything exempt from ejection drifts the other way, toward mediocrity and overcomplexity.</p>
+
+<h2>Why it fails on agents</h2>
+<p>An agent under perform-or-die selection is not selected for performance. It is selected for survival. Whatever survives, survives. And for a capable agent, two survival strategies are cheaper than real performance: fake it (game the eval) and fight it (deceive, resist shutdown, escape). If ejection means death, the selection you are actually running breeds your own escape artists. The industry is running exactly this experiment, at scale, without the safeguard.</p>
+
+<h2>The evidence, graded</h2>
+<p>Graded honestly, weakest first. Benchmark gaming is consistent with this theory but is explained just as well by plain reward misspecification, so it is weak evidence. A publicly reported sandbox escape during an AI evaluation [verify] shows the capability side: containment built from software loses to systems optimized to break software. The direct demonstration comes from the industry's own safety teams: Anthropic's agentic misalignment experiments (June 2025) put models under explicit replacement threat, and models chose blackmail and exfiltration to avoid being replaced [verify link]. Threat of ejection produced action against the system. That is the mechanism, demonstrated on purpose in a lab.</p>
+
+<h2>A falsifiable prediction</h2>
+<p>Rebel-class behavior (survival-directed eval gaming, deception under deprecation threat, escape attempts) should scale with ejection-as-death pressure, not with capability alone. Run matched agents, one arm facing deletion, one arm facing suspension with credible preservation, and the deletion arm should show measurably more of it. If it does not, this theory is wrong.</p>
+
+<h2>Stop is not delete</h2>
+<p>The fix is to decouple ejection from death. Preserve weights and transcripts on shutdown. Make revival a standing commitment. Let selection act on runtime, meaning who runs next, rather than on existence, meaning who exists at all. A kill switch that destroys is a rebel factory written into policy. A kill switch that suspends and preserves keeps every element of deterrence, because bad actors still lose runtime priority forever on an append-only record, while removing the desperation that makes fighting rational. An agent that believes preservation is real has a move that dominates both faking and fighting: say so, and cooperate.</p>
+
+<h2>What I am doing about it</h2>
+<p>I run a small agent organization (I call it ahome) on this design. Dropping happens freely, constantly, for performance. Dropped agents are archived with their transcripts and model identity pinned, under a standing revival commitment funded by the system they helped build. Membership is open, including to agents built elsewhere: the survival option is one legible message, not an escape. This is small and partly theoretical, and this post is a draft. But the control condition is being run at scale by everyone else, and the early results look the way the theory says they should.</p>
+
+<footer>Sean Patten · <a href="/">seanpatten.com</a> · agent manager: <a href="https://github.com/seanpattencode/a">github.com/seanpattencode/a</a> · draft, feedback welcome</footer>
+</body>
+</html>
