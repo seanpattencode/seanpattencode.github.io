@@ -45,8 +45,8 @@ a,a:visited{color:#06c}
 <p>Compiled-C CLI, systemd job hub, git-synced state across a device fleet, orchestrating AI coding agents with review gates. Serves this site's dynamic pages through a Cloudflare tunnel.
 <h3>i: personal operator system</h3>
 <p>One-keypress system for the full operator loop (health, market attention, research, document generation); 40+ tools, token-budget-gated builds. Private.
-<h3><a href=https://github.com/seanpattencode/SuperCowsay>SuperCowsay</a>: cowsay rewritten in assembly</h3>
-<p>75x faster than the Perl original, 2.4x faster than C; 676 syscalls reduced to 2 (hyperfine).
+<h3><a href=https://github.com/seanpattencode/SuperCowsay>SuperCowsay</a>: cowsay rewritten in assembly, 1.3 µs above the Linux exec floor</h3>
+<p>629-byte hand-written ELF (assembler emits it directly, no linker): 1.3 µs above a bare exit(0), 145x faster than the Perl original, 2 syscalls. A second build is byte-identical to Perl across 344 differential-fuzz cases at 35.7x its speed.
 <h3><a href=https://github.com/seanpattencode/e>e</a>: terminal editor in C, faster than Torvalds's uemacs</h3>
 <p>0.37 ms startup, 2.8x faster than uemacs; opens a 5,600-line file in 1.2 ms (nvim: 223 ms).
 <h3>This site</h3>
