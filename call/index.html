@@ -1,16 +1,12 @@
-<meta charset=utf-8>
-<title>Call</title>
-<meta name=viewport content=width=device-width>
-<body style=background:#000;color:#fff>
-<p id=m>mic…</p>
 <audio id=a autoplay></audio>
 <script src=https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js></script>
 <script>
-const ok=r=>{a.srcObject=r;m.textContent='connected · tap if silent';onclick=()=>a.play()}
-navigator.mediaDevices.getUserMedia({audio:!0}).then(s=>{const J=location.hash.slice(1)
-if(J){const p=new Peer;p.on('open',()=>p.call('seanc-'+J,s).on('stream',ok))}
-else{const C=Math.random().toString(36).slice(2,6),p=new Peer('seanc-'+C)
-p.on('open',()=>{location.hash=C;const u=location.href;m.innerHTML='<a style=color:#6af href='+u+'>'+u+'</a>'})
-p.on('call',c=>{c.answer(s);c.on('stream',ok)})}
-}).catch(e=>m.textContent=e)
+ok=r=>{a.srcObject=r;m.textContent='connected'}
+navigator.mediaDevices.getUserMedia({audio:1}).then(s=>{
+if(location.hash){p=new Peer;p.on('open',()=>p.call('seanc-'+location.hash.slice(1),s).on('stream',ok))}
+else{C=Math.random().toString(36).slice(2);p=new Peer('seanc-'+C)
+p.on('open',()=>location.hash=C)
+p.on('call',c=>{c.on('stream',ok).answer(s)})}
+})
 </script>
+<p id=m>
