@@ -7,10 +7,11 @@ ok=r=>{a.srcObject=r;m.textContent='connected'}
 g=c=>navigator.mediaDevices.getUserMedia(c)
 g({audio:1,video:1}).catch(_=>g({audio:1})).then(s=>{
 b.srcObject=s
-if(location.hash){p=new Peer;p.on('open',()=>p.call('seanc-'+location.hash.slice(1),s).on('stream',ok))}
-else{C=Math.random().toString(36).slice(2);p=new Peer('seanc-'+C)
-p.on('open',()=>location.hash=C)
-p.on('call',c=>{c.on('stream',ok).answer(s)})}
+R=location.hash.slice(1)||Math.random().toString(36).slice(2)
+location.hash=R;m.textContent=R
+h=new Peer('seanc-'+R)  // first one here hosts the room; id taken = someone has it, join them
+h.on('call',c=>{c.on('stream',ok).answer(s)})
+h.on('error',e=>e.type=='unavailable-id'&&(p=new Peer).on('open',()=>p.call('seanc-'+R,s).on('stream',ok)))
 })
 </script>
 <p id=m>
