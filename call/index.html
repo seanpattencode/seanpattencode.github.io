@@ -7,7 +7,7 @@ ok=r=>{a.srcObject=r;m.textContent='you - connected'}
 navigator.mediaDevices.getUserMedia({audio:1}).then(s=>{  // audio only: no camera prompt
 b.srcObject=s
 R=location.hash.slice(1)||Math.random().toString(36).slice(2)
-location.hash=R;m.textContent='you - waiting'
+location.hash=R;m.textContent='you'
 h=new Peer('seanc-'+R)  // first one here hosts the room; id taken = someone has it, join them
 h.on('call',c=>{c.on('stream',ok).answer(s)})
 h.on('error',e=>e.type=='unavailable-id'&&(p=new Peer).on('open',()=>p.call('seanc-'+R,s).on('stream',ok)))
