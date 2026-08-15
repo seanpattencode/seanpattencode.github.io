@@ -1,21 +1,21 @@
-<style>#a{width:100%}#c{position:fixed;right:8px;bottom:8px;width:22%}#b{width:100%;display:none}#m{margin:0;text-align:center;font:20px system-ui;color:#fff;background:#000;padding:3px 0}#c button{width:50%}#v{opacity:.4}</style>
+<style>#a{width:100%}#c{position:fixed;right:8px;bottom:8px;width:22%}#b{width:100%}#m{margin:0;text-align:center;font:20px system-ui;color:#fff;background:#000;padding:3px 0}#c button{width:50%}#v{opacity:.4}</style>
 <video id=a autoplay playsinline></video>
-<div id=c><video id=b autoplay playsinline muted></video><p id=m></p><button id=v><svg viewBox="0 0 16 12" width=22 fill=currentColor><path d="M1 2h9v8H1zM11 5l4-3v8l-4-3z"/></svg></button><button id=k><svg viewBox="0 0 16 16" width=22 fill=currentColor><rect x=6 y=1 width=4 height=8 rx=2 /><path d="M3 8a5 5 0 0010 0" fill=none stroke=currentColor stroke-width=1.5 /><path d="M7 13h2v2H7z"/></svg></button></div>
+<div id=c><video id=b autoplay playsinline muted hidden></video><p id=m></p><button id=v><svg viewBox="0 0 8 6" width=22 fill=currentColor><path d="M0 0h5v6H0zM6 2l2-2v6l-2-2z"/></svg></button><button id=k><svg viewBox="0 0 16 16" width=22 fill=none stroke=currentColor stroke-width=1.5 stroke-linecap=round><path d="M8 2v5" stroke-width=4 /><path d="M4 8a4 4 0 008 0"/><path d="M8 12v2"/></svg></button></div>
 <script src=https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js></script>
 <script>
 ok=r=>{a.srcObject=r;m.textContent='you - connected'}
-navigator.mediaDevices.getUserMedia({audio:1}).then(s=>{  // audio only: no camera prompt
-b.srcObject=s;V=K=0  // V=camera track, K=live call; declared so the buttons can test them
-R=location.hash.slice(1)||Math.random().toString(36).slice(2)
-location.hash=R;m.textContent='you'
-A=P=>P.on('call',c=>{K=c;c.on('stream',ok).answer(s)})  // either side answers, so either can re-call
-P=A(h=new Peer('seanc-'+R))  // first one here hosts the room; id taken = someone has it, join them
-h.on('error',e=>e.type=='unavailable-id'&&A(P=new Peer).on('open',()=>(K=P.call('seanc-'+R,s)).on('stream',ok)))
-D=(e,on)=>e.style.opacity=on?1:.4  // dim icon = that thing is off
-k.onclick=()=>{t=s.getAudioTracks()[0];D(k,t.enabled=!t.enabled)}
-v.onclick=()=>V?D(v,V.enabled=!V.enabled)
- :navigator.mediaDevices.getUserMedia({video:1}).then(w=>{  // camera only when asked for
- V=w.getVideoTracks()[0];s.addTrack(V);b.style.display='block';D(v,1)
- if(K){q=K.peer;K.close();(K=P.call(q,s)).on('stream',ok)}})  // peerjs won't renegotiate: re-place the call
+D=(e,o)=>e.style.opacity=o?1:.4  // dim icon = off
+G=c=>navigator.mediaDevices.getUserMedia(c)
+G({audio:1}).then(s=>{  // audio only: no camera prompt
+b.srcObject=s;V=K=0;T=s.getAudioTracks()[0]
+location.hash=R=location.hash.slice(1)||Math.random().toString(36).slice(2)
+m.textContent='you';I='seanc-'+R
+A=P=>P.on('call',c=>{K=c;c.on('stream',ok).answer(s)})  // both answer, so either can re-call
+P=A(h=new Peer(I))  // first one here hosts the room; id taken = join whoever has it
+h.on('error',e=>e.type=='unavailable-id'&&A(P=new Peer).on('open',()=>(K=P.call(I,s)).on('stream',ok)))
+k.onclick=()=>D(k,T.enabled=!T.enabled)
+v.onclick=()=>V?D(v,V.enabled=!V.enabled):G({video:1}).then(w=>{
+V=w.getVideoTracks()[0];s.addTrack(V);b.hidden=0;D(v,1)
+K&&(q=K.peer,K.close(),(K=P.call(q,s)).on('stream',ok))})  // peerjs won't renegotiate: re-place the call
 })
 </script>
