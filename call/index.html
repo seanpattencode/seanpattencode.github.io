@@ -4,8 +4,7 @@
 <script src=https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js></script>
 <script>
 ok=r=>{a.srcObject=r;m.textContent='you - connected'}
-g=c=>navigator.mediaDevices.getUserMedia(c)
-g({audio:1,video:1}).catch(_=>g({audio:1})).then(s=>{
+navigator.mediaDevices.getUserMedia({audio:1}).then(s=>{  // audio only: no camera prompt
 b.srcObject=s
 R=location.hash.slice(1)||Math.random().toString(36).slice(2)
 location.hash=R;m.textContent='you - waiting'
