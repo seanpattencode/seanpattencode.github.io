@@ -1,16 +1,20 @@
-<style>#a{width:100%}#b,#m{position:fixed;right:8px;bottom:8px;width:22%}#m{margin:0;text-align:center;font:20px system-ui;color:#fff;background:#000;padding:3px 0}</style>
+<style>#a{width:100%}#c{position:fixed;right:8px;bottom:8px;width:22%}#b{width:100%;display:none}#m{margin:0;text-align:center;font:20px system-ui;color:#fff;background:#000;padding:3px 0}#c button{width:50%;font:16px system-ui}</style>
 <video id=a autoplay playsinline></video>
-<video id=b autoplay playsinline muted></video>
+<div id=c><video id=b autoplay playsinline muted></video><p id=m></p><button id=v>video</button><button id=k>mute</button></div>
 <script src=https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js></script>
 <script>
 ok=r=>{a.srcObject=r;m.textContent='you - connected'}
 navigator.mediaDevices.getUserMedia({audio:1}).then(s=>{  // audio only: no camera prompt
-b.srcObject=s
+b.srcObject=s;V=K=0  // V=camera track, K=live call; declared so the buttons can test them
 R=location.hash.slice(1)||Math.random().toString(36).slice(2)
 location.hash=R;m.textContent='you'
-h=new Peer('seanc-'+R)  // first one here hosts the room; id taken = someone has it, join them
-h.on('call',c=>{c.on('stream',ok).answer(s)})
-h.on('error',e=>e.type=='unavailable-id'&&(p=new Peer).on('open',()=>p.call('seanc-'+R,s).on('stream',ok)))
+A=P=>P.on('call',c=>{K=c;c.on('stream',ok).answer(s)})  // either side answers, so either can re-call
+P=A(h=new Peer('seanc-'+R))  // first one here hosts the room; id taken = someone has it, join them
+h.on('error',e=>e.type=='unavailable-id'&&A(P=new Peer).on('open',()=>(K=P.call('seanc-'+R,s)).on('stream',ok)))
+k.onclick=()=>{t=s.getAudioTracks()[0];k.textContent=(t.enabled=!t.enabled)?'mute':'unmute'}
+v.onclick=()=>V?v.textContent=(V.enabled=!V.enabled)?'video off':'video'
+ :navigator.mediaDevices.getUserMedia({video:1}).then(w=>{  // camera only when asked for
+ V=w.getVideoTracks()[0];s.addTrack(V);b.style.display='block';v.textContent='video off'
+ if(K){q=K.peer;K.close();(K=P.call(q,s)).on('stream',ok)}})  // peerjs won't renegotiate: re-place the call
 })
 </script>
-<p id=m>
