@@ -1,6 +1,6 @@
-<style>#a{width:100%}#c{position:fixed;right:8px;bottom:8px;width:22%}#b{width:100%;display:none}#m{margin:0;text-align:center;font:20px system-ui;color:#fff;background:#000;padding:3px 0}#c button{width:50%;font:16px system-ui}</style>
+<style>#a{width:100%}#c{position:fixed;right:8px;bottom:8px;width:22%}#b{width:100%;display:none}#m{margin:0;text-align:center;font:20px system-ui;color:#fff;background:#000;padding:3px 0}#c button{width:50%}#v{opacity:.4}</style>
 <video id=a autoplay playsinline></video>
-<div id=c><video id=b autoplay playsinline muted></video><p id=m></p><button id=v>video</button><button id=k>mute</button></div>
+<div id=c><video id=b autoplay playsinline muted></video><p id=m></p><button id=v><svg viewBox="0 0 16 12" width=22 fill=currentColor><path d="M1 2h9v8H1zM11 5l4-3v8l-4-3z"/></svg></button><button id=k><svg viewBox="0 0 16 16" width=22 fill=currentColor><rect x=6 y=1 width=4 height=8 rx=2 /><path d="M3 8a5 5 0 0010 0" fill=none stroke=currentColor stroke-width=1.5 /><path d="M7 13h2v2H7z"/></svg></button></div>
 <script src=https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js></script>
 <script>
 ok=r=>{a.srcObject=r;m.textContent='you - connected'}
@@ -11,10 +11,11 @@ location.hash=R;m.textContent='you'
 A=P=>P.on('call',c=>{K=c;c.on('stream',ok).answer(s)})  // either side answers, so either can re-call
 P=A(h=new Peer('seanc-'+R))  // first one here hosts the room; id taken = someone has it, join them
 h.on('error',e=>e.type=='unavailable-id'&&A(P=new Peer).on('open',()=>(K=P.call('seanc-'+R,s)).on('stream',ok)))
-k.onclick=()=>{t=s.getAudioTracks()[0];k.textContent=(t.enabled=!t.enabled)?'mute':'unmute'}
-v.onclick=()=>V?v.textContent=(V.enabled=!V.enabled)?'video off':'video'
+D=(e,on)=>e.style.opacity=on?1:.4  // dim icon = that thing is off
+k.onclick=()=>{t=s.getAudioTracks()[0];D(k,t.enabled=!t.enabled)}
+v.onclick=()=>V?D(v,V.enabled=!V.enabled)
  :navigator.mediaDevices.getUserMedia({video:1}).then(w=>{  // camera only when asked for
- V=w.getVideoTracks()[0];s.addTrack(V);b.style.display='block';v.textContent='video off'
+ V=w.getVideoTracks()[0];s.addTrack(V);b.style.display='block';D(v,1)
  if(K){q=K.peer;K.close();(K=P.call(q,s)).on('stream',ok)}})  // peerjs won't renegotiate: re-place the call
 })
 </script>
