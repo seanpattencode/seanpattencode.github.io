@@ -7,7 +7,8 @@ GR=(p,g)=>'linear-gradient(to top,#0c0 '+p+'%,'+g+' '+p+'%)'
 M=(st,f)=>{let W=new AudioContext,Y=W.createAnalyser(),Z=new Float32Array(Y.fftSize)
 W.resume();W.createMediaStreamSource(st).connect(Y)
 return setInterval(()=>{Y.getFloatTimeDomainData(Z);f(Math.min(100,Math.max(...Z.map(Math.abs))*300))},100)}
-ok=r=>{a.srcObject=r;o.hidden=0;clearInterval(Q);Q=M(r,p=>o.style.background=GR(p,'#000'))}
+W=c=>c.peerConnection.oniceconnectionstatechange=()=>/disc|fail|clos/.test(c.peerConnection.iceConnectionState)&&bye()
+OK=c=>r=>{K=c;a.srcObject=r;o.hidden=0;clearInterval(Q);Q=M(r,p=>o.style.background=GR(p,'#000'));W(c)}
 D=(e,o)=>e.style.opacity=o?1:.4
 G=c=>navigator.mediaDevices.getUserMedia(c)
 G({audio:1}).then(s=>{
@@ -15,14 +16,16 @@ b.srcObject=s;V=K=Q=0;T=s.getAudioTracks()[0]
 location.hash=R=location.hash.slice(1)||Math.random().toString(36).slice(2)
 m.textContent='you';I='seanc-'+R
 M(s,p=>k.style.background=GR(p,'#0000'))
-A=P=>P.on('call',c=>{K=c;c.on('stream',ok).answer(s)})
+bye=()=>o.hidden=1
+A=P=>P.on('call',c=>c.on('stream',OK(c)).on('close',bye).answer(s))
 S=n=>{P=A(new Peer(I+n))
- P.on('open',()=>(K=P.call(I+(3-n),s)).on('stream',ok))
- P.on('error',e=>e.type=='unavailable-id'&&n<2&&S(2))}
+ P.on('open',()=>{E=()=>o.hidden&&[1,2,3].map(x=>{if(x<n){let d=P.call(I+x,s);d.on('stream',OK(d)).on('close',bye)}});E();n>1&&setInterval(E,3e3)})  // only higher slots ring lower ones: one caller, no glare
+ P.on('error',e=>e.type=='unavailable-id'&&(n<4?S(n+1):setTimeout(()=>S(1),3e3)))}
 S(1)
 k.onclick=()=>D(k,T.enabled=!T.enabled)
 v.onclick=()=>V?D(v,V.enabled=!V.enabled):G({video:1}).then(w=>{
 V=w.getVideoTracks()[0];s.addTrack(V);b.hidden=0;D(v,1)
-K&&(q=K.peer,K.close(),(K=P.call(q,s)).on('stream',ok))})
+// peerjs cannot renegotiate: drop the call and rebuild it, now carrying video
+if(K){let z=K,d=P.call(K.peer,s);d.on('stream',r=>{OK(d)(r);z.close()}).on('close',bye)}})
 })
 </script>
