@@ -1,6 +1,7 @@
-<style>#a{width:100%}#c{position:fixed;right:8px;bottom:8px;width:22%}#b{width:100%}#m,#o{margin:0;text-align:center;font:20px system-ui;color:#fff;background:#000;padding:3px 0}#c button{width:50%;height:34px}#v{opacity:.4}#c select{width:100%;background:#000;color:#fff;border:1px solid #333;border-radius:4px;font:12px system-ui;margin-top:3px;padding:3px}</style>
+<style>#a{width:100%}#c{position:fixed;right:8px;bottom:8px;width:22%}#b{width:100%}#m,#o{margin:0;text-align:center;font:20px system-ui;color:#fff;background:#000;padding:3px 0}#c button{width:50%;height:34px}#v{opacity:.4}#c select{width:100%;background:#000;color:#fff;border:1px solid #333;border-radius:4px;font:12px system-ui;margin-top:3px;padding:3px}#w{position:fixed;top:0;left:0;right:0;text-align:center;font:22px system-ui;color:#fff;background:#c00;padding:8px;display:none;animation:bl 1s infinite}@keyframes bl{50%{background:#600}}#g{text-align:center;font:15px system-ui;letter-spacing:3px;padding:1px 0}</style>
 <video id=a autoplay playsinline></video>
-<div id=c><video id=b autoplay playsinline muted hidden></video><p id=m></p><p id=o hidden>them</p><button id=v><svg viewBox="0 0 8 6" width=22 fill=currentColor><path d="M0 0h5v6H0zM6 2l2-2v6l-2-2z"/></svg></button><button id=k><svg viewBox="0 0 16 16" width=22 fill=none stroke=currentColor stroke-linecap=round><path d="M8 2v5" stroke-width=4 /><path d="M4 8a4 4 0 008 0"/><path d="M8 12v2"/></svg></button><select id=mi title=microphone></select><select id=ci title=camera></select><select id=so title=speaker></select></div>
+<div id=w></div>
+<div id=c><video id=b autoplay playsinline muted hidden></video><p id=m></p><p id=o hidden>them</p><div id=g hidden></div><button id=v><svg viewBox="0 0 8 6" width=22 fill=currentColor><path d="M0 0h5v6H0zM6 2l2-2v6l-2-2z"/></svg></button><button id=k><svg viewBox="0 0 16 16" width=22 fill=none stroke=currentColor stroke-linecap=round><path d="M8 2v5" stroke-width=4 /><path d="M4 8a4 4 0 008 0"/><path d="M8 12v2"/></svg></button><select id=mi title=microphone></select><select id=ci title=camera></select><select id=so title=speaker></select></div>
 <script src=https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js></script>
 <script>
 GR=(p,g)=>'linear-gradient(to top,#0c0 '+p+'%,'+g+' '+p+'%)'
@@ -14,22 +15,35 @@ b.srcObject=s;V=0;T=s.getAudioTracks()[0]
 location.hash=R=location.hash.slice(1)||Math.random().toString(36).slice(2)
 m.textContent='you';I='seanc-'+R
 km=M(s,p=>k.style.background=GR(p,'#0000'))
-PE={};show=0                                          // peerid -> {c,stream,amp,meter}; show=displayed id
+PE={};show=0;everConn=0;DISC=0;RING=0;LL={}          // peerid -> {c,stream,amp,meter}; show=displayed id
+bn=()=>{let live=0;for(let id in PE)if(PE[id].stream)live++ // loud VISUAL banner: our socket dropped, or we lost the person we were talking to
+ w.style.display=DISC||(everConn&&!live)?'block':'none'
+ w.textContent=DISC?'⚠ RECONNECTING…':'⚠ DISCONNECTED — waiting for reconnect'}
 pick=()=>{let best=-1,bid=0                            // display the peer with the most audio energy (a silent ghost never wins over someone talking)
  for(let id in PE)if(PE[id].stream&&PE[id].amp>best){best=PE[id].amp;bid=id}
- if(bid!=show){show=bid;a.srcObject=bid?PE[bid].stream:null;o.hidden=!bid}}
+ if(bid!=show){show=bid;a.srcObject=bid?PE[bid].stream:null;o.hidden=!bid;g.hidden=!bid}
+ bn()}
+sig=()=>{let e=PE[show],pc=e&&e.c.peerConnection;if(!pc){g.hidden=1;return} // signal strength: RTT + packet loss of the shown call
+ pc.getStats().then(rs=>{let rtt=0,lost=0,recv=0
+  rs.forEach(r=>{if(r.type=='candidate-pair'&&(r.nominated||r.selected)&&r.currentRoundTripTime!=null)rtt=r.currentRoundTripTime
+   if(r.type=='inbound-rtp'&&(r.kind||r.mediaType)=='audio'){lost=r.packetsLost||0;recv=r.packetsReceived||0}})
+  let L=LL[show]||{lost:lost,recv:recv},dl=lost-L.lost,dr=recv-L.recv,fr=dr>0?dl/(dl+dr):0;LL[show]={lost:lost,recv:recv}
+  let q=rtt<.3&&fr<.02?3:rtt<.6&&fr<.1?2:1
+  g.hidden=0;g.textContent='●●●'.slice(0,q)+'○○○'.slice(0,3-q)
+  g.style.color=q>2?'#0c0':q>1?'#fc3':'#f33';g.title='RTT '+(rtt*1e3|0)+'ms loss '+(fr*100).toFixed(1)+'%'})}
 drop=id=>{let e=PE[id];if(e){e.meter&&clearInterval(e.meter);try{e.c.close()}catch(x){}delete PE[id]}pick()}
 add=c=>{let id=c.peer;if(PE[id]&&PE[id].c!=c)try{PE[id].c.close()}catch(x){}
  PE[id]={c:c,amp:0}
- c.on('stream',r=>{if(!PE[id])return;PE[id].stream=r
+ c.on('stream',r=>{if(!PE[id])return;everConn=1;PE[id].stream=r
   PE[id].meter&&clearInterval(PE[id].meter);PE[id].meter=M(r,p=>{PE[id]&&(PE[id].amp=p);id==show&&(o.style.background=GR(p,'#000'))})
   c.peerConnection.oniceconnectionstatechange=()=>/disc|fail|clos/.test(c.peerConnection.iceConnectionState)&&drop(id)
   pick()})
  c.on('close',()=>drop(id))}
-setInterval(pick,400)
+setInterval(pick,400);setInterval(sig,1500)
 A=P=>P.on('call',c=>{add(c);c.answer(s)})
 S=n=>{P=A(new Peer(I+n))
- P.on('open',()=>{E=()=>[1,2,3].forEach(x=>{if(x<n&&!PE[I+x])add(P.call(I+x,s))});E();setInterval(E,2500)})
+ P.on('open',()=>{DISC=0;bn();E=()=>[1,2,3].forEach(x=>{if(x<n&&!PE[I+x])add(P.call(I+x,s))});E();RING||(RING=setInterval(()=>E(),2500))}) // reconnect re-emits open -> guard the re-ring interval
+ P.on('disconnected',()=>{DISC=1;bn();try{P.reconnect()}catch(x){}}) // peerjs does NOT auto-reconnect the broker socket; restore it so re-ring + new peers work
  P.on('error',e=>e.type=='unavailable-id'&&(n<4?S(n+1):setTimeout(()=>S(1),3e3)))}
 S(1)
 recall=()=>{for(let id in PE)add(P.call(id,s))}
