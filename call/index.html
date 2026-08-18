@@ -50,13 +50,13 @@ recall=()=>{for(let id in PE)add(P.call(id,s))}
 sw=(kind,con,old,set)=>G(con).then(n=>{let t=(kind=='audio'?n.getAudioTracks():n.getVideoTracks())[0];t.enabled=old?old.enabled:1
  for(let id in PE)PE[id].c.peerConnection&&PE[id].c.peerConnection.getSenders().forEach(x=>x.track&&x.track.kind==kind&&x.replaceTrack(t))
  old&&s.removeTrack(old);s.addTrack(t);set(t);dev()})
-en=id=>G({video:id?{deviceId:{exact:id}}:1}).then(w=>{V=w.getVideoTracks()[0];s.addTrack(V);b.hidden=0;b.srcObject=s;D(v,1);recall();dev()}).catch(()=>id&&en(0))
+en=(id,sc)=>(sc?navigator.mediaDevices.getDisplayMedia({video:1}):G({video:id?{deviceId:{exact:id}}:1})).then(w=>{let had=V;V=w.getVideoTracks()[0];if(had){for(let i in PE)PE[i].c.peerConnection&&PE[i].c.peerConnection.getSenders().forEach(x=>x.track&&x.track.kind=='video'&&x.replaceTrack(V));s.removeTrack(had)}s.addTrack(V);b.hidden=0;b.srcObject=s;D(v,1);if(!had)recall();dev()}).catch(()=>id&&!sc&&en(0))
 dev=()=>navigator.mediaDevices.enumerateDevices().then(L=>{let ai=T.getSettings().deviceId,vi=V&&V.getSettings().deviceId
  mi.innerHTML=ci.innerHTML=so.innerHTML='';if(!V)ci.add(new Option('\u{1F3A5} off','off',0,1));let cam=0
  L.forEach(d=>d.kind=='audioinput'?mi.add(new Option('\u{1F3A4} '+(d.label||'mic'),d.deviceId,0,d.deviceId==ai)):d.kind=='videoinput'?d.deviceId&&(cam=1,ci.add(new Option('\u{1F3A5} '+(d.label||'camera'),d.deviceId,0,d.deviceId==vi))):so.add(new Option('\u{1F50A} '+(d.label||'speaker'),d.deviceId,0,d.deviceId==(a.sinkId||'default'))))
- cam||ci.add(new Option('\u{1F3A5} turn on camera','on'));so.hidden=!a.setSinkId||!so.options.length})
+ cam||ci.add(new Option('\u{1F3A5} turn on camera','on'));ci.add(new Option('\u{1F5A5} share screen','screen'));so.hidden=!a.setSinkId||!so.options.length})
 mi.onchange=()=>sw('audio',{audio:{deviceId:{exact:mi.value}}},T,t=>{T=t;clearInterval(km);km=M(s,p=>k.style.background=GR(p,'#0000'))})
-ci.onchange=()=>{let x=ci.value;if(x=='off')return;V&&x!='on'?sw('video',{video:{deviceId:{exact:x}}},V,t=>{V=t;b.srcObject=s}):en(x=='on'?0:x)}
+ci.onchange=()=>{let x=ci.value;if(x=='off')return;if(x=='screen')return en(0,1);V&&x!='on'?sw('video',{video:{deviceId:{exact:x}}},V,t=>{V=t;b.srcObject=s}):en(x=='on'?0:x)}
 so.onchange=()=>a.setSinkId&&a.setSinkId(so.value)
 k.onclick=()=>D(k,T.enabled=!T.enabled)
 v.onclick=()=>V?D(v,V.enabled=!V.enabled):en()
