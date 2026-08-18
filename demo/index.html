@@ -2,6 +2,7 @@
 <meta charset=utf-8>
 <title>a — live demo</title>
 <meta name=viewport content="width=device-width,initial-scale=1">
+<script type=speculationrules>{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/call/*","/demo/*","/games/pong/*"]}}]},"eagerness":"moderate"}]}</script><script>{let A,T;addEventListener('mousedown',e=>{let a=e.target.closest?.('a[href]');if(a&&!(e.button|e.ctrlKey|e.metaKey|e.shiftKey|e.altKey)){A=a;T=Date.now();a.click()}});addEventListener('click',e=>{if(e.isTrusted&&Date.now()-T<1e3&&e.target.closest?.('a[href]')==A)e.preventDefault()},true)}</script>
 <link rel=stylesheet href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css">
 <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
