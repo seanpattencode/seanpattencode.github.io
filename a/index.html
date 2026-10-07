@@ -33,12 +33,12 @@ h+='<div class=steps>1. Open <b>Terminal</b>'+(m?' (Cmd+Space, type Terminal)':'
 if(m){
 h+='<p class=or>or'
 h+='<p><a class=btn href="'+dmg+'">Download .dmg</a>'
-h+='<div class=steps>1. Open the downloaded .dmg<br>2. Right-click <b>Install a</b> → Open<br>3. Click Open when macOS asks</div>'
+h+='<div class=steps>1. Open the .dmg, double-click <b>Install a</b> — macOS blocks it, click Done<br>2. System Settings → Privacy &amp; Security → scroll down → <b>Open Anyway</b><br>3. Click Open — Terminal runs the install</div>'
 }
 if(!m&&!l){
 h+='<button class=btn2 onclick="navigator.clipboard.writeText(\''+cmd+'\');var s=this.querySelector(\'span\');s.textContent=\'Copied!\';setTimeout(function(){s.textContent=\'Copy install command\'},2000)"><span>Copy install command</span></button>'
 h+='<div class=cmd><code>'+cmd+'</code></div>'
-h+='<div class=steps>Paste in your terminal and press Enter</div>'
+h+='<div class=steps>Windows: 1. PowerShell as Administrator: <code>wsl --install -d Ubuntu</code>, then restart<br>2. Open <b>Ubuntu</b>, paste the command, press Enter</div>'
 }
 document.getElementById('main').innerHTML=h
 </script>
